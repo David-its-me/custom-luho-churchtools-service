@@ -39,13 +39,13 @@ class CTPostsClient(ChurchToolsApiAbstract):
             logging.info('using connection details provided from secrets folder')
 
         if self.token is not None:
-            self.login_ct_rest_api(ct_token=self.token)
+            self._login_ct_rest_api(ct_token=self.token)
         elif self.ct_user is not None and self.ct_password is not None:
-            self.login_ct_rest_api(ct_user=self.ct_user, ct_password=self.ct_password)
+            self._login_ct_rest_api(ct_user=self.ct_user, ct_password=self.ct_password)
 
         logger.debug("Announcement Client init finished")
 
-    def login_ct_rest_api(self, **kwargs):
+    def _login_ct_rest_api(self, **kwargs):
         """Authorization: Login<token>
         If you want to authorize a request, you need to provide a Login Token as
         Authorization header in the format {Authorization: Login<token>}
@@ -73,7 +73,7 @@ class CTPostsClient(ChurchToolsApiAbstract):
                     "Token Login Successful as %s",
                     response_content["data"]["email"],
                 )
-                self.session.headers["CSRF-Token"] = self.get_ct_csrf_token()
+                self.session.headers["CSRF-Token"] = self._get_ct_csrf_token()
                 return json.loads(response.content)["data"]["id"]
             logger.warning(
                 "Token Login failed with %s",
@@ -89,7 +89,7 @@ class CTPostsClient(ChurchToolsApiAbstract):
 
             if response.status_code == 200:
                 response_content = json.loads(response.content)
-                person = self.who_am_i()
+                person = self._who_am_i()
                 logger.info("User/Password Login Successful as %s", person["email"])
                 return person["id"]
             logger.warning(
@@ -99,7 +99,7 @@ class CTPostsClient(ChurchToolsApiAbstract):
             return False
         return None
     
-    def who_am_i(self):
+    def _who_am_i(self):
         """Simple function which returns the user information for the authorized user
         :return: CT user dict if found or bool
         :rtype: dict | bool.
@@ -117,7 +117,7 @@ class CTPostsClient(ChurchToolsApiAbstract):
         logger.warning("Checking who am i failed with %s", response.status_code)
         return False
     
-    def get_ct_csrf_token(self):
+    def _get_ct_csrf_token(self):
         """Requests CSRF Token https://hilfe.church.tools/wiki/0/API-CSRF
         Storing and transmitting CSRF token in headers is required for all legacy AJAX API calls unless disabled by admin
         Therefore it is executed with each new login.
@@ -153,7 +153,6 @@ class CTPostsClient(ChurchToolsApiAbstract):
 
         if response.status_code == 200:
             response_content = json.loads(response.content)
-            print(response_content)
             return response_content["data"].copy()
         logger.warning(
             "%s Something went wrong fetching events: %s",
@@ -162,17 +161,14 @@ class CTPostsClient(ChurchToolsApiAbstract):
         )
         return None
 
-    def load_image(self, image_url: str):
+    def load_image(self, image_url: str) -> bytes :
 
         headers = {"accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*"}
         params = {}
 
-        response = self.session.get(url=image_url + "?fm=webp&q=80&w=1920&h=auto", params=params, headers=headers)
-
+        response: requests.Response = self.session.get(url=image_url + "?fm=webp&q=80&w=1920&h=auto", params=params, headers=headers)
         if response.status_code == 200:
-            response_content = json.loads(response.content)
-            print(response_content)
-            return response_content["data"].copy()
+            return response.content
         logger.warning(
             "%s Something went wrong fetching events: %s",
             response.status_code,

@@ -1,18 +1,22 @@
+import json
 from typing import Union
 from client.ct_posts_client import CTPostsClient
 from client.ct_calendar_client import CTCalendarClient
 from client.ct_event_client import CTEventClient
 from fastapi import FastAPI
+from fastapi.responses import Response, HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from services.date_data_service import DateDataService
 from starlette.responses import FileResponse
-from services.calendar_manager import CalendarManager
+from service.calendar_manager import CalendarManager
+from service.date_data_service import DateDataService
+from service.posts_selection_service import PostSelectionService
 from pydantic import BaseModel
 
 app = FastAPI()
 ct_calendar_client: CTCalendarClient = CTCalendarClient()
 ct_event_client: CTEventClient = CTEventClient()
 ct_posts_client: CTPostsClient = CTPostsClient()
+current_slide_count: int = 0
 
 
 calendar_manager: CalendarManager = CalendarManager(ct_calendar_client=ct_calendar_client)
@@ -20,18 +24,18 @@ date_service: DateDataService = DateDataService(
     ct_calendar_client=ct_calendar_client, 
     ct_event_client=ct_event_client, 
     calendar_manager=calendar_manager)
+posts_service: PostSelectionService = PostSelectionService(ct_posts_client)
 
 @app.on_event("startup")
 async def startup_event() -> None:
     """tasks to do at server startup"""
     # Poll once in the beginning, which takes a bit longer. After that the values are cached for 1 hours
     try: # If a problem occours the try catch clause ensures, that the whole server is still able to start.
-        ct_posts_client.load_posts()
+        posts_service.getAllVisiblePostIds()
         date_service.get_upcomming_date(0) 
     except:
         pass
     
-
 @app.get("/")
 def read_root():
     return read_static_content(asset_type="html", path="main.html")
@@ -39,6 +43,37 @@ def read_root():
 @app.get("/slide/upcommingEvents/{slideCount}")
 def read_root():
     return read_static_content(asset_type="html", path="main.html")
+
+
+@app.get("/slide/next")
+def get_next_Slide():
+    visibleIds = posts_service.getAllVisiblePostIds()
+    global current_slide_count
+    if len(visibleIds) > 0:
+        html_content = """
+            <html>
+                <head>
+                    <title>{}</title>
+                </head>
+                <body style="heigt:100%; margin:0; overflow:hidden;">
+                    <img src="../../post/image/{}" alt="" style=display:block; width:auto; height:100%;">
+                </body>
+            </html>
+            """.format(posts_service.getTitle(visibleIds[current_slide_count]), visibleIds[current_slide_count])
+        
+        current_slide_count = (current_slide_count + 1) % len(visibleIds)
+        return HTMLResponse(content=html_content, status_code=200)
+    
+    return """
+        <html>
+            <head>
+                <title>Some HTML in here</title>
+            </head>
+            <body>
+                Keine Beiträge vorhanden
+            </body>
+        </html>
+        """
 
 @app.get("/static/{asset_type}/{path}")
 def read_static_content(asset_type: str, path: str):
@@ -60,23 +95,27 @@ def read_script(path: str):
 def read_css(path: str):
     return read_static_content(asset_type="css", path=path)
 
+
 @app.get("/date/upcomming/{nextUpcomming}")
 def get_event(nextUpcomming: int):
     return date_service.get_upcomming_date(nextUpcomming)
 
 
-
 @app.get("/test")
 def test():
     return ct_posts_client.load_posts()
-
-@app.get("/test2")
-def test2():
-    return DateDataService._tag_rule({"descriptionSequence": ["<biblicalBook>", "<#1>"], "replacement": ["<biblicalBook>", " <#1>"]})
     
-@app.get("/testimage")
-def testimage():
-    return ct_posts_client.load_image(ct_posts_client.load_posts()["images"][0])
+@app.get(
+        "/post/image/{postId}",
+        responses = {
+            200: {
+                "content": {"image/png": {}}
+            }
+        },
+        response_class=Response
+    )
+def get_post_image(postId: str):
+    return Response(content=posts_service.getImage(postId=postId), media_type="image/png")
 
 class Visibility(BaseModel):
     visible: bool
