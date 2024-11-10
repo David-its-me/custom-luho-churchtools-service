@@ -10,7 +10,7 @@ from repository_classes.my_date import MyDate
 from repository_classes.my_time import MyTime
 
 
-class PollingService():
+class CTCalendarClient():
     
     
     def __init__(self):
@@ -84,102 +84,8 @@ class PollingService():
         return MyTime(
             hour=local_time.hour,
             minute=local_time.minute)
-
-    def get_services(self) -> dict:
-        with open("../custom-configuration/services.json") as services_file:
-            try:
-                return json.load(services_file)
-            except: 
-                pass
-        return []
     
-    def get_service_id_of(self, input_service_title: str) -> int:
-        input_service_title = input_service_title.lower().rstrip().lstrip()
-        for service in self.get_services():
-            service_title = service['name']
-            service_title = service_title.lower().rstrip().lstrip()
-            if input_service_title in service_title:
-                return service["id"]
-            if service_title in input_service_title:
-                return service["id"]
-        return -1
     
-    def has_livestream(self, event_id: int) -> bool:
-        potential_service_names = ["stream", "live", "übertragung"]
-        for service_name in potential_service_names:
-            service_name_id: int = self.get_service_id_of(service_name)
-            if service_name_id > -1:
-                try:
-                    service_count: int = self.api.get_event_services_counts_ajax(eventId=event_id, serviceId=service_name_id)[service_name_id]
-                    if service_count > 0:
-                        return True
-                except:
-                    pass
-        return False
-    
-    def has_childreenschurch(self, event_id: int) -> bool:
-        potential_service_names = ["kinder", "kids"]
-        for service_name in potential_service_names:
-            service_name_id: int = self.get_service_id_of(service_name)
-            if service_name_id > -1:
-                try:
-                    service_count: int = self.api.get_event_services_counts_ajax(eventId=event_id, serviceId=service_name_id)[service_name_id]
-                    if service_count > 0:
-                        return True
-                except:
-                    pass
-        return False
-
-    def get_speaker(self, event_id: int):
-        event_data: dict = self.api.get_AllEventData_ajax(event_id)
-
-        potential_service_names = ["predigt", "referent", "speaker", "vortrag", "sprecher", "program", "liturgie", "moderation"]
-
-        for service_name in potential_service_names:
-            try:
-                service_name_id: int = self.get_service_id_of(service_name)
-                if service_name_id > -1:
-                    if "services" in event_data:
-                        if event_data["services"] is not None:
-                            for service in event_data["services"]:
-                                service_id: int = int(service["service_id"])
-                                if service_id == service_name_id:
-                                    if "name" in service:
-                                        if service["name"] is not None:
-                                            return service["name"]
-            except:
-                pass
-        
-        return ""
-        
-
-    def get_events(self, number_upcomming: int) -> [CalendarDate]:
-        # load next event (limit)
-        result = self.api.get_events(limit=number_upcomming, direction='forward')
-
-        events: [CalendarDate] = []
-
-        for event in result:
-            new_entry: CalendarDate = CalendarDate(
-                id=event["appointmentId"],
-                start_date=self._extract_date(event['startDate']),
-                start_time=self._extract_time(event['startDate']),
-                start_iso_datetime=event['startDate'],
-                end_iso_datetime=event['endDate'],
-                description=event['description'],
-                end_date=self._extract_date(event['endDate']),
-                end_time=self._extract_time(event['endDate']),
-                title=event['name'],
-                category=event['calendar']['title'],
-                is_event=True,
-                speaker=self.get_speaker(event_id=event["id"]),
-                sermontext="",
-                has_childrenschurch=self.has_childreenschurch(event_id=event["id"]),
-                has_livestream=self.has_livestream(event_id=event["id"]),
-            )
-            events.append(new_entry)
-        
-        return events
 
     
     def get_calendar_list(self) -> dict:
@@ -194,14 +100,14 @@ class PollingService():
             self, 
             from_: str, 
             to_: str, 
-            calendar_ids: list) -> [CalendarDate]:
+            calendar_ids: list) -> list[CalendarDate]:
         
         result: dict = self.api.get_calendar_appointments(
             calendar_ids=calendar_ids,
             from_=from_,
             to_=to_)
         
-        dates: [CalendarDate] = []
+        dates: list[CalendarDate] = []
 
         for date in result:
             if not date["allDay"]: # Ignore dates without time (Ganztägig termine)
@@ -223,7 +129,7 @@ class PollingService():
                     has_livestream=False,
                     has_childrenschurch=False,
                     has_communion=False,
-                    location = PollingService._resolve_address_to_string(address=date["address"], note=date["note"]),
+                    location = self._resolve_address_to_string(address=date["address"], note=date["note"]),
                     sermontext = "",
                     speaker = "",
                     category_color = date['calendar']['color'],

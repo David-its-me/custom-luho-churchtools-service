@@ -4,29 +4,39 @@ import time
 import json
 from repository_classes.calendar_date import CalendarDate
 from services.calendar_manager import CalendarManager
-from services.polling_service import PollingService
+from client.ct_event_client import CTEventClient
+from client.ct_calendar_client import CTCalendarClient
 from functools import cmp_to_key
 import copy
 
 
 class DateDataService():
+    """
+    This class has some utilities to extract the relevant information from the 
+    data of the Curchtools client calls. 
+    TODO the rule manipulation methods have very bad runitime.
+    """
 
-    def __init__(self, polling_service: PollingService, calendar_manager: CalendarManager) -> None:
-        self.polling_service: PollingService = polling_service
+    def __init__(self, 
+                 ct_calendar_client: CTCalendarClient, 
+                 ct_event_client: CTEventClient, 
+                 calendar_manager: CalendarManager) -> None:
+        self.ct_calendar_client: CTCalendarClient = ct_calendar_client
+        self.ct_event_client:CTEventClient = ct_event_client
         self.calendar_manager: CalendarManager = calendar_manager
-        self.prettified_dates: [CalendarDate] = None
+        self.prettified_dates: list[CalendarDate] = None
         ####################################################################
         self.cache_timeout_duration = 60 * 60 # 1 hour
         ####################################################################
 
-    def sort_dates(self, dates: [CalendarDate]) -> [CalendarDate]:
-        sorted_dates: [CalendarDate] = sorted(dates, key=cmp_to_key(lambda date1, date2: date2.is_start_before(date1)))
+    def sort_dates(self, dates: list[CalendarDate]) -> list[CalendarDate]:
+        sorted_dates: list[CalendarDate] = sorted(dates, key=cmp_to_key(lambda date1, date2: date2.is_start_before(date1)))
         return sorted_dates
     
-    def merge_dates(self, dates: [CalendarDate]) -> [CalendarDate]:
+    def merge_dates(self, dates: list[CalendarDate]) -> list[CalendarDate]:
         # assume that the dates are already sorted, so only the neighbouring entries are compared.
         # Comparison is based on (1) date, (2) time and (3) title of the event.
-        result: [CalendarDate] = []
+        result: list[CalendarDate] = []
         for i in range(len(dates) - 1):
             if dates[i].start_date.equals(dates[i+1].start_date) \
                         and dates[i].start_time.equals(dates[i+1].start_time) \
@@ -62,7 +72,7 @@ class DateDataService():
         return result
     
     @staticmethod
-    def _match_sequence(text: str, sequence: [str]) -> (bool, {}):
+    def _match_sequence(text: str, sequence: list[str]) -> tuple[bool, dict]:
         text_copy: str = copy.deepcopy(text) # because the text is manipulated
         if text_copy is None:
             text_copy = ""
@@ -107,8 +117,8 @@ class DateDataService():
     
         return True, resulting_variable_matching
     
-    def filter_dates(self, dates: [CalendarDate]) -> [CalendarDate]:
-        result: [CalendarDate] = []
+    def filter_dates(self, dates: list[CalendarDate]) -> list[CalendarDate]:
+        result: list[CalendarDate] = []
         for date in dates:
             included: bool = True # per default include events
             calendar_data = self.calendar_manager.get_calendar_by_id(date.category_id)
@@ -170,8 +180,8 @@ class DateDataService():
         return result
     
     @staticmethod
-    def _replace_rule_tags_in_sequences(match_sequence:[str], result_sequence: str |list, tag_definitions: dict) -> [{}]:
-        result:[{}] = []
+    def _replace_rule_tags_in_sequences(match_sequence: list[str], result_sequence: str |list, tag_definitions: dict) -> list[dict]:
+        result: list[dict] = []
         i: int = 0
         tag_found: bool = False
         for fragment in match_sequence:
@@ -198,7 +208,7 @@ class DateDataService():
                                         replaced_result_sequence = tag_match["value"]
 
                                 for match in tag_match["match"]:
-                                    replaced_match_sequence: [str] = []
+                                    replaced_match_sequence: list[str] = []
                                     replaced_match_sequence.extend(match_sequence)
                                     replaced_match_sequence[i] = match
                                     ##### recursion step #####
@@ -212,8 +222,8 @@ class DateDataService():
         return result
     
     @staticmethod
-    def _tag_rule_with_given_sequences_names(rule: dict, match_sequence_name: str, result_sequence_name: str, tag_definitions: dict) -> [{}]:
-        resulting_rules: [] = []
+    def _tag_rule_with_given_sequences_names(rule: dict, match_sequence_name: str, result_sequence_name: str, tag_definitions: dict) -> list[dict]:
+        resulting_rules: list = []
         if match_sequence_name in rule and result_sequence_name in rule:
             for replaced_sequence in DateDataService._replace_rule_tags_in_sequences(match_sequence=rule[match_sequence_name], result_sequence=rule[result_sequence_name], tag_definitions=tag_definitions):
                 new_rule: dict = copy.deepcopy(rule)
@@ -223,8 +233,8 @@ class DateDataService():
         return resulting_rules
 
     @staticmethod
-    def _tag_rule_with_given_match_sequence_name(rule: dict, match_sequence_name: str, tag_definitions: dict) -> [{}]:
-        resulting_rules: [] = []
+    def _tag_rule_with_given_match_sequence_name(rule: dict, match_sequence_name: str, tag_definitions: dict) -> list[dict]:
+        resulting_rules: list = []
         if "replacement" in rule:
             resulting_rules.extend(DateDataService._tag_rule_with_given_sequences_names(
                 rule=rule, 
@@ -247,8 +257,8 @@ class DateDataService():
 
 
     @staticmethod
-    def _tag_rule(rule: dict, tag_definitions: dict) -> [{}]:
-        resulting_rules: [] = []
+    def _tag_rule(rule: dict, tag_definitions: dict) -> list[dict]:
+        resulting_rules: list = []
         if "titleSequence" in rule:
             resulting_rules.extend(DateDataService._tag_rule_with_given_match_sequence_name(
                 rule=rule, 
@@ -341,7 +351,7 @@ class DateDataService():
         
         return date
     
-    def prettify_dates(self, dates: [CalendarDate]) -> [CalendarDate]:
+    def prettify_dates(self, dates: list[CalendarDate]) -> list[CalendarDate]:
         tag_definitions: dict = []
         with open("../custom-configuration/prettify_rules_tag_definitions.json") as tag_definition_file:
             tag_definitions = json.load(tag_definition_file)
@@ -364,27 +374,31 @@ class DateDataService():
         return True
 
 
-    def get_upcomming_date(self, number_upcomming) -> [CalendarDate]:
+    def get_upcomming_date(self, number_upcomming) -> list[CalendarDate]:
         if number_upcomming <= 0:
             number_upcomming = 1
         if self.is_cache_dirty() or number_upcomming > len(self.prettified_dates):
-            dates: [CalendarDate] = []
+            dates: list[CalendarDate] = []
 
             # Events
             duration_event_polling = time.time()
             if number_upcomming < 12:
-                dates = self.polling_service.get_events(12)
+                dates = self.ct_event_client.get_events(12)
             else:
-                dates = self.polling_service.get_events(number_upcomming)
+                dates = self.ct_event_client.get_events(number_upcomming)
             duration_event_polling = time.time() - duration_event_polling
 
             # Calendar dates - after 2 weeks only show the events
             duration_date_polling = time.time()
             today = datetime.now() + timedelta(days=0)
-            two_weeks = today + timedelta(days=14)
+            
+            ################################################
+            two_weeks = today + timedelta(days=4)
+            ################################################
+            #two_weeks = today + timedelta(days=14)
             date_string_tomorrow: str = today.strftime('%Y-%m-%d')
             date_string_two_weeks: str = two_weeks.strftime('%Y-%m-%d')
-            dates.extend(self.polling_service.get_calendar_dates(
+            dates.extend(self.ct_calendar_client.get_calendar_dates(
                 from_=date_string_tomorrow, 
                 to_=date_string_two_weeks,
                 calendar_ids=self.calendar_manager.get_visible_calendar_ids()))
@@ -392,17 +406,17 @@ class DateDataService():
             
             # Sorting dates
             duration_sorting = time.time()
-            sorted_dates: [CalendarDate] = self.sort_dates(dates)
+            sorted_dates: list[CalendarDate] = self.sort_dates(dates)
             duration_sorting = time.time() - duration_sorting
 
             # Merging
             duration_merging = time.time()
-            merged_dates: [CalendarDate] = self.merge_dates(sorted_dates)
+            merged_dates: list[CalendarDate] = self.merge_dates(sorted_dates)
             duration_merging = time.time() - duration_merging
 
             # Filtering
             duration_filtering = time.time()
-            filtered_dates: [CalendarDate] = self.filter_dates(merged_dates)
+            filtered_dates: list[CalendarDate] = self.filter_dates(merged_dates)
             duration_filtering = time.time() - duration_filtering
 
             # Prettify dates
