@@ -4,7 +4,7 @@ from client.ct_posts_client import CTPostsClient
 from client.ct_calendar_client import CTCalendarClient
 from client.ct_event_client import CTEventClient
 from fastapi import FastAPI
-from fastapi.responses import Response, HTMLResponse
+from fastapi.responses import Response, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import FileResponse
 from service.calendar_manager import CalendarManager
@@ -17,6 +17,7 @@ ct_calendar_client: CTCalendarClient = CTCalendarClient()
 ct_event_client: CTEventClient = CTEventClient()
 ct_posts_client: CTPostsClient = CTPostsClient()
 current_slide_count: int = 0
+numberOfCalendarSlides: int = 6
 
 
 calendar_manager: CalendarManager = CalendarManager(ct_calendar_client=ct_calendar_client)
@@ -31,7 +32,6 @@ async def startup_event() -> None:
     """tasks to do at server startup"""
     # Poll once in the beginning, which takes a bit longer. After that the values are cached for 1 hours
     try: # If a problem occours the try catch clause ensures, that the whole server is still able to start.
-        posts_service.getAllVisiblePostIds()
         date_service.get_upcomming_date(0) 
     except:
         pass
@@ -44,36 +44,34 @@ def read_root():
 def read_root():
     return read_static_content(asset_type="html", path="main.html")
 
-
-@app.get("/slide/next")
-def get_next_Slide():
-    visibleIds = posts_service.getAllVisiblePostIds()
-    global current_slide_count
-    if len(visibleIds) > 0:
-        html_content = """
+@app.get("/slide/post/{post_id}")
+def get_post_slide(post_id: str):
+    html_content = """
             <html>
                 <head>
                     <title>{}</title>
                 </head>
-                <body style="heigt:100%; margin:0; overflow:hidden;">
-                    <img src="../../post/image/{}" alt="" style=display:block; width:auto; height:100%;">
+                <body style="margin:0 ; display: flex; align-items: center; justify-content: center; background-color: white; overflow: hidden;">
+                    <img src="../../post/image/{}" style="max-width:100%;">
                 </body>
             </html>
-            """.format(posts_service.getTitle(visibleIds[current_slide_count]), visibleIds[current_slide_count])
+            """.format(posts_service.getTitle(post_id), post_id)
         
-        current_slide_count = (current_slide_count + 1) % len(visibleIds)
-        return HTMLResponse(content=html_content, status_code=200)
+    return HTMLResponse(content=html_content, status_code=200)
+
+
+@app.get("/slide/next/{propresenterSlideNumber}")
+def get_next_Slide():
+    visibleIds = posts_service.getAllVisiblePostIds()
+    global current_slide_count
+    global numberOfCalendarSlides
+    current_slide_count = (current_slide_count + 1) % (len(visibleIds) + numberOfCalendarSlides)
+    if len(visibleIds) > current_slide_count:
+        return RedirectResponse("/slide/post/{}".format(visibleIds[current_slide_count]))    
     
-    return """
-        <html>
-            <head>
-                <title>Some HTML in here</title>
-            </head>
-            <body>
-                Keine Beiträge vorhanden
-            </body>
-        </html>
-        """
+    else:
+        return RedirectResponse("/slide/upcommingEvents/{}".format(current_slide_count - len(visibleIds) + 1))
+    
 
 @app.get("/static/{asset_type}/{path}")
 def read_static_content(asset_type: str, path: str):

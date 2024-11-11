@@ -166,7 +166,7 @@ class CTPostsClient(ChurchToolsApiAbstract):
         headers = {"accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*"}
         params = {}
 
-        response: requests.Response = self.session.get(url=image_url + "?fm=webp&q=80&w=1920&h=auto", params=params, headers=headers)
+        response: requests.Response = self.session.get(url=image_url + "?fm=webp&q=80&w=auto&h=1080&crop=original", params=params, headers=headers)
         if response.status_code == 200:
             return response.content
         logger.warning(

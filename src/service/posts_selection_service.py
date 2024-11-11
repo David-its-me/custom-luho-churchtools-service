@@ -9,7 +9,7 @@ class PostSelectionService:
 
     def getAllVisiblePostIds(self) -> list[str]:
 
-        #if self.posts_data is None: #Caching
+        #if self.posts_data is None:
         self.posts_data: list[dict] = self.posts_client.load_posts()
             #TODO implement some logic to only show the latest post
             # within a group
