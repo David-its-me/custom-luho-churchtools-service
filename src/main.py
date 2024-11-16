@@ -46,18 +46,15 @@ def read_root():
 
 @app.get("/slide/post/{post_id}")
 def get_post_slide(post_id: str):
-    html_content = """
-            <html>
-                <head>
-                    <title>{}</title>
-                </head>
-                <body style="margin:0 ; display: flex; align-items: center; justify-content: center; background-color: white; overflow: hidden;">
-                    <img src="../../post/image/{}" style="max-width:100%;">
-                </body>
-            </html>
-            """.format(posts_service.getTitle(post_id), post_id)
-        
-    return HTMLResponse(content=html_content, status_code=200)
+    postData = posts_service.getData(postId=post_id)
+    if postData['content'] is None:  
+        return read_static_content(asset_type="html", path="announcement_fullscreen.html")
+    elif len(postData['content']) < 3:
+        return read_static_content(asset_type="html", path="announcement_fullscreen.html")
+    elif len(postData['images']) == 1:
+        return read_static_content(asset_type="html", path="announcement_one_image.html")
+    else: #len(postData['images']) == 2:
+        return read_static_content(asset_type="html", path="announcmenet_two_images.html")
 
 
 @app.get("/slide/next/{propresenterSlideNumber}")
@@ -102,9 +99,9 @@ def get_event(nextUpcomming: int):
 @app.get("/test")
 def test():
     return ct_posts_client.load_posts()
+
     
-@app.get(
-        "/post/image/{postId}",
+@app.get("/post/image/{postId}",
         responses = {
             200: {
                 "content": {"image/png": {}}
@@ -114,6 +111,14 @@ def test():
     )
 def get_post_image(postId: str):
     return Response(content=posts_service.getImage(postId=postId), media_type="image/png")
+
+
+@app.get("/post/data/{postId}")
+def get_post_title(postId: str):
+    return posts_service.getData(postId=postId)
+
+
+
 
 class Visibility(BaseModel):
     visible: bool

@@ -21,7 +21,8 @@ class PostSelectionService:
 
         return imageIds
     
-    def getTitle(self, postId: str) -> str:
+    
+    def getData(self, postId: str) -> str:
         if self.posts_data is None: #Caching
             self.posts_data: list[dict] = self.posts_client.load_posts()
             #TODO implement some logic to only show the latest post
@@ -29,9 +30,13 @@ class PostSelectionService:
 
         for post in self.posts_data:
             if str(post["id"]) == postId:
-                return post["title"]
+                return post
         
-        return ""
+        return {
+            "id": postId,
+            "title": "Titel",
+            "content": ""
+        }
     
     def getImage(self, postId: str) -> bytes:
 
