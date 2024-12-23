@@ -203,7 +203,7 @@ class PollingService():
         
         dates: [CalendarDate] = []
 
-        if dates is not None:
+        if result is not None:
             for date in result:
                 if not date["allDay"]: # Ignore dates without time (Ganztägig termine)
                     description: str = date['information']
