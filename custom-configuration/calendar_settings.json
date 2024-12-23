@@ -16,29 +16,52 @@
             "modifiedPid": 1
         },
         "visible": false,
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "group"
     },
     {
         "id": 21,
         "name": "CIA",
         "nameTranslated": "CIA",
         "sortKey": 0,
-        "color": "#f691b2",
+        "color": "#a47ae2",
         "isPublic": false,
         "isPrivate": false,
         "randomUrl": "KIrQQb6l9UA38zkdjqKsLqz1dQUtn1X6",
@@ -48,7 +71,10 @@
         "meta": {
             "modifiedDate": "2019-01-30T20:46:59Z",
             "modifiedPid": 1
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "group"
     },
     {
         "id": 24,
@@ -66,55 +92,101 @@
             "modifiedDate": "2019-01-30T20:47:35Z",
             "modifiedPid": 1
         },
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "group"
     },
     {
         "id": 27,
         "name": "Gebetskreis",
         "nameTranslated": "Gebetskreis",
         "sortKey": 0,
-        "color": "#92e1c0",
+        "color": "#62d0a2",
         "isPublic": false,
         "isPrivate": false,
         "randomUrl": "b7erO1wQHJSfSDd6JXolaetLwKZnH54d",
-        "iCalSourceUrl": null,
+        "iCalSourceUrl": "",
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
             "modifiedDate": "2019-01-30T20:48:05Z",
             "modifiedPid": 1
         },
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "group"
     },
     {
         "id": 30,
@@ -133,22 +205,45 @@
             "modifiedPid": 1
         },
         "visible": false,
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "church"
     },
     {
         "id": 33,
@@ -166,20 +261,40 @@
             "modifiedDate": "2022-04-02T13:16:11Z",
             "modifiedPid": 60
         },
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
         }
     },
@@ -188,7 +303,7 @@
         "name": "Gottesdienste",
         "nameTranslated": "Gottesdienste",
         "sortKey": 0,
-        "color": "#7bd148",
+        "color": "#16a765",
         "isPublic": true,
         "isPrivate": false,
         "randomUrl": "G1LlYEJPipnXT1Wmh7aPxMP8oX2WdMNE",
@@ -199,23 +314,48 @@
             "modifiedDate": "2022-11-17T09:25:29Z",
             "modifiedPid": 156
         },
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"],
-                ["hochzeit"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ],
+                [
+                    "hochzeit"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": 0,
+        "type": "church"
     },
     {
         "id": 36,
@@ -233,20 +373,40 @@
             "modifiedDate": "2023-01-10T09:28:52Z",
             "modifiedPid": 156
         },
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
         }
     },
@@ -255,11 +415,11 @@
         "name": "Gemeinde Kalender ",
         "nameTranslated": "Gemeinde Kalender ",
         "sortKey": 0,
-        "color": "#3e70ce",
+        "color": "#0560ab",
         "isPublic": true,
         "isPrivate": false,
         "randomUrl": "VG4Tc66XyC0kRSEQoJrCO6KD6fafo9ni",
-        "iCalSourceUrl": null,
+        "iCalSourceUrl": "",
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
@@ -267,64 +427,209 @@
             "modifiedPid": 60
         },
         "visible": true,
-        "filterRules":{
-            "includeTitles":[
-                ["bibel", "abend"],
-                ["kirch", "chor"],
-                ["studien", "abend"],
-                ["luho", "pop", "gospel"],
-                ["luho", "pop", "gosel"],
-                ["jugend", "chor"],
-                ["kind", "chor"],
-                ["pos", "chor"],
-                ["krab", "caf"],
-                ["krab", "kaf"],
-                ["kultur", "nachmittag"],
-                ["single", "dinner"],
-                ["passion","bibel"],
-                ["bibel", "vortrag"],
-                ["passion", "andacht"],
-                ["bibel", "andacht"],
-                ["sommer", "fest"],
-                ["geminde", "fest"],
-                ["sommer", "feier"],
-                ["gemeinde", "feier"],
-                ["konzert"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "bibel",
+                    "abend"
+                ],
+                [
+                    "kirch",
+                    "chor"
+                ],
+                [
+                    "studien",
+                    "abend"
+                ],
+                [
+                    "luho",
+                    "pop",
+                    "gospel"
+                ],
+                [
+                    "luho",
+                    "pop",
+                    "gosel"
+                ],
+                [
+                    "jugend",
+                    "chor"
+                ],
+                [
+                    "kind",
+                    "chor"
+                ],
+                [
+                    "pos",
+                    "chor"
+                ],
+                [
+                    "krab",
+                    "caf"
+                ],
+                [
+                    "krab",
+                    "kaf"
+                ],
+                [
+                    "kultur",
+                    "nachmittag"
+                ],
+                [
+                    "single",
+                    "dinner"
+                ],
+                [
+                    "passion",
+                    "bibel"
+                ],
+                [
+                    "bibel",
+                    "vortrag"
+                ],
+                [
+                    "passion",
+                    "andacht"
+                ],
+                [
+                    "bibel",
+                    "andacht"
+                ],
+                [
+                    "sommer",
+                    "fest"
+                ],
+                [
+                    "geminde",
+                    "fest"
+                ],
+                [
+                    "sommer",
+                    "feier"
+                ],
+                [
+                    "gemeinde",
+                    "feier"
+                ],
+                [
+                    "konzert"
+                ]
             ],
-            "excludeTitles":[
-                ["haus","kreis"],
-                ["konf","us"],
-                ["konf", "is"],
-                ["unterricht"],
-                ["band", "probe"],
-                ["eigentümer", "versammlung"],
-                ["test"],
-                ["kirch", "bau"],
-                ["bau","ausschuss"],
-                ["bau","auschus"],
-                ["bau", "verein"],
-                ["kirch", "bau"],
-                ["frei", "zeit"],
-                ["hoch", "zeit"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["ausschuss"],
-                ["auschus"],
-                ["auschuß"],
-                ["ausschuß"],
-                ["smd"],
-                ["besuch", "dienst"],
-                ["chor", "probe"],
-                ["aufbau"],
-                ["abbau"],
-                ["sitzung"],
-                ["besprechung"],
-                ["kern","team"],
-                ["task", "force"],
-                ["hochzeit"]
+            "excludeTitles": [
+                [
+                    "haus",
+                    "kreis"
+                ],
+                [
+                    "konf",
+                    "us"
+                ],
+                [
+                    "konf",
+                    "is"
+                ],
+                [
+                    "unterricht"
+                ],
+                [
+                    "band",
+                    "probe"
+                ],
+                [
+                    "eigent\u00fcmer",
+                    "versammlung"
+                ],
+                [
+                    "test"
+                ],
+                [
+                    "kirch",
+                    "bau"
+                ],
+                [
+                    "bau",
+                    "ausschuss"
+                ],
+                [
+                    "bau",
+                    "auschus"
+                ],
+                [
+                    "bau",
+                    "verein"
+                ],
+                [
+                    "kirch",
+                    "bau"
+                ],
+                [
+                    "frei",
+                    "zeit"
+                ],
+                [
+                    "hoch",
+                    "zeit"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "ausschuss"
+                ],
+                [
+                    "auschus"
+                ],
+                [
+                    "auschu\u00df"
+                ],
+                [
+                    "ausschu\u00df"
+                ],
+                [
+                    "smd"
+                ],
+                [
+                    "besuch",
+                    "dienst"
+                ],
+                [
+                    "chor",
+                    "probe"
+                ],
+                [
+                    "aufbau"
+                ],
+                [
+                    "abbau"
+                ],
+                [
+                    "sitzung"
+                ],
+                [
+                    "besprechung"
+                ],
+                [
+                    "kern",
+                    "team"
+                ],
+                [
+                    "task",
+                    "force"
+                ],
+                [
+                    "hochzeit"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "church"
     },
     {
         "id": 38,
@@ -343,22 +648,45 @@
             "modifiedPid": 53
         },
         "visible": false,
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "group"
     },
     {
         "id": 39,
@@ -377,22 +705,45 @@
             "modifiedPid": 156
         },
         "visible": false,
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "group"
     },
     {
         "id": 41,
@@ -411,22 +762,45 @@
             "modifiedPid": 53
         },
         "visible": false,
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "church"
     },
     {
         "id": 44,
@@ -445,22 +819,45 @@
             "modifiedPid": 53
         },
         "visible": false,
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "church"
     },
     {
         "id": 45,
@@ -479,22 +876,45 @@
             "modifiedPid": 60
         },
         "visible": false,
-        "filterRules":{
-            "includeTitles":[
-                ["public"],
-                ["visible"],
-                ["sichtbar"],
-                ["öffentlich"]
+        "filterRules": {
+            "includeTitles": [
+                [
+                    "public"
+                ],
+                [
+                    "visible"
+                ],
+                [
+                    "sichtbar"
+                ],
+                [
+                    "\u00f6ffentlich"
+                ]
             ],
-            "excludeTitles":[
-                ["test"],
-                ["intern"],
-                ["privat"],
-                ["private"],
-                ["hidden"],
-                ["invisible"]
+            "excludeTitles": [
+                [
+                    "test"
+                ],
+                [
+                    "intern"
+                ],
+                [
+                    "privat"
+                ],
+                [
+                    "private"
+                ],
+                [
+                    "hidden"
+                ],
+                [
+                    "invisible"
+                ]
             ]
-        }
+        },
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "group"
     },
     {
         "id": 48,
@@ -512,6 +932,91 @@
             "modifiedDate": "2023-12-11T07:57:36Z",
             "modifiedPid": 53
         },
-        "visible": false
+        "visible": false,
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "type": "church"
+    },
+    {
+        "id": 51,
+        "name": "Ausfl\u00fcge und Freizeiten",
+        "nameTranslated": "Ausfl\u00fcge und Freizeiten",
+        "sortKey": 0,
+        "color": "#7bd148",
+        "isPublic": true,
+        "isPrivate": false,
+        "randomUrl": "DurcnOcyzDHLFGD0v6qgaG3ZBYUFR66e",
+        "iCalSourceUrl": null,
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "campusId": null,
+        "eventTemplateId": null,
+        "type": "church",
+        "meta": {
+            "modifiedDate": "2024-01-29T11:24:17Z",
+            "modifiedPid": 53
+        }
+    },
+    {
+        "id": 53,
+        "name": "Vermietungen",
+        "nameTranslated": "Vermietungen",
+        "sortKey": 0,
+        "color": "#f83a22",
+        "isPublic": true,
+        "isPrivate": false,
+        "randomUrl": "Jf74YaDa3HnzTx1n82aKHC7auZeNKzwg",
+        "iCalSourceUrl": "",
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "campusId": null,
+        "eventTemplateId": null,
+        "type": "church",
+        "visible": false,
+        "meta": {
+            "modifiedDate": "2024-03-13T11:48:25Z",
+            "modifiedPid": 53
+        }
+    },
+    {
+        "id": 54,
+        "name": "YoungLife",
+        "nameTranslated": "YoungLife",
+        "sortKey": 0,
+        "color": "#0dbf7b",
+        "isPublic": false,
+        "isPrivate": false,
+        "randomUrl": "lvVHH2bI85P6lC1R66P2AUzrLyZfXOEL",
+        "iCalSourceUrl": "",
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": 0,
+        "campusId": null,
+        "eventTemplateId": null,
+        "visible": false,
+        "type": "group",
+        "meta": {
+            "modifiedDate": "2024-04-05T08:26:21Z",
+            "modifiedPid": 60
+        }
+    },
+    {
+        "id": 55,
+        "name": "Kinderchor",
+        "nameTranslated": "Kinderchor",
+        "sortKey": 100,
+        "color": "#e63b7a",
+        "isPublic": false,
+        "isPrivate": false,
+        "randomUrl": "ZAhrHw1sx1GARc3A95PJ0sIHNMpfzwdZ",
+        "iCalSourceUrl": null,
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "campusId": null,
+        "eventTemplateId": null,
+        "type": "group",
+        "meta": {
+            "modifiedDate": "2024-09-24T11:43:46Z",
+            "modifiedPid": 156
+        }
     }
 ]

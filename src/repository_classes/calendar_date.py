@@ -29,7 +29,9 @@ class CalendarDate():
         self.start_time: MyTime = start_time
         self.end_time: MyTime = end_time
         self.category: str = category
-        self.description: str = description
+        self.description: str = ""
+        if description is not None:
+            self.description: str = description
         self.title: str = title
         self.has_livestream: bool = has_livestream
         self.has_childrenschurch: bool = has_childrenschurch
