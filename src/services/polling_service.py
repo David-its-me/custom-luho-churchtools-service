@@ -203,33 +203,34 @@ class PollingService():
         
         dates: [CalendarDate] = []
 
-        for date in result:
-            if not date["allDay"]: # Ignore dates without time (Ganztägig termine)
-                description: str = date['information']
-                if description is None:
-                    description = ""
-                newDate: CalendarDate = CalendarDate(
-                    id=date["id"],
-                    start_date=self._extract_date(date['startDate']),
-                    start_time=self._extract_time(date['startDate']),
-                    start_iso_datetime=date['startDate'],
-                    end_iso_datetime=date['endDate'],
-                    description=description,
-                    end_date=self._extract_date(date['endDate']),
-                    end_time=self._extract_time(date['endDate']),
-                    title=date['caption'],
-                    category=date['calendar']['name'],
-                    is_event=False,
-                    has_livestream=False,
-                    has_childrenschurch=False,
-                    has_communion=False,
-                    location = PollingService._resolve_address_to_string(address=date["address"], note=date["note"]),
-                    sermontext = "",
-                    speaker = "",
-                    category_color = date['calendar']['color'],
-                    category_id=date['calendar']['id']
-                )
-                dates.append(newDate)
+        if dates is not None:
+            for date in result:
+                if not date["allDay"]: # Ignore dates without time (Ganztägig termine)
+                    description: str = date['information']
+                    if description is None:
+                        description = ""
+                    newDate: CalendarDate = CalendarDate(
+                        id=date["id"],
+                        start_date=self._extract_date(date['startDate']),
+                        start_time=self._extract_time(date['startDate']),
+                        start_iso_datetime=date['startDate'],
+                        end_iso_datetime=date['endDate'],
+                        description=description,
+                        end_date=self._extract_date(date['endDate']),
+                        end_time=self._extract_time(date['endDate']),
+                        title=date['caption'],
+                        category=date['calendar']['name'],
+                        is_event=False,
+                        has_livestream=False,
+                        has_childrenschurch=False,
+                        has_communion=False,
+                        location = PollingService._resolve_address_to_string(address=date["address"], note=date["note"]),
+                        sermontext = "",
+                        speaker = "",
+                        category_color = date['calendar']['color'],
+                        category_id=date['calendar']['id']
+                    )
+                    dates.append(newDate)
             
         return dates
         
