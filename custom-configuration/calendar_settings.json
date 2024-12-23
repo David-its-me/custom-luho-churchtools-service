@@ -246,59 +246,6 @@
         "type": "church"
     },
     {
-        "id": 33,
-        "name": "Jungenschaft",
-        "nameTranslated": "Jungenschaft",
-        "sortKey": 0,
-        "color": "#3E70CE",
-        "isPublic": false,
-        "isPrivate": false,
-        "randomUrl": "F7YQcWITWfXbrsaCGxRnU0XCtpRPIxPH",
-        "iCalSourceUrl": null,
-        "campusId": null,
-        "eventTemplateId": null,
-        "meta": {
-            "modifiedDate": "2022-04-02T13:16:11Z",
-            "modifiedPid": 60
-        },
-        "filterRules": {
-            "includeTitles": [
-                [
-                    "public"
-                ],
-                [
-                    "visible"
-                ],
-                [
-                    "sichtbar"
-                ],
-                [
-                    "\u00f6ffentlich"
-                ]
-            ],
-            "excludeTitles": [
-                [
-                    "test"
-                ],
-                [
-                    "intern"
-                ],
-                [
-                    "privat"
-                ],
-                [
-                    "private"
-                ],
-                [
-                    "hidden"
-                ],
-                [
-                    "invisible"
-                ]
-            ]
-        }
-    },
-    {
         "id": 35,
         "name": "Gottesdienste",
         "nameTranslated": "Gottesdienste",
@@ -356,59 +303,6 @@
         "syncToEvTermine": false,
         "evTermineEventTypeId": 0,
         "type": "church"
-    },
-    {
-        "id": 36,
-        "name": "JuBi",
-        "nameTranslated": "JuBi",
-        "sortKey": 0,
-        "color": "#c93173",
-        "isPublic": true,
-        "isPrivate": false,
-        "randomUrl": "OzZY4mO5BsLOY9Afu5QuNi4XCP8VKVTK",
-        "iCalSourceUrl": null,
-        "campusId": null,
-        "eventTemplateId": null,
-        "meta": {
-            "modifiedDate": "2023-01-10T09:28:52Z",
-            "modifiedPid": 156
-        },
-        "filterRules": {
-            "includeTitles": [
-                [
-                    "public"
-                ],
-                [
-                    "visible"
-                ],
-                [
-                    "sichtbar"
-                ],
-                [
-                    "\u00f6ffentlich"
-                ]
-            ],
-            "excludeTitles": [
-                [
-                    "test"
-                ],
-                [
-                    "intern"
-                ],
-                [
-                    "privat"
-                ],
-                [
-                    "private"
-                ],
-                [
-                    "hidden"
-                ],
-                [
-                    "invisible"
-                ]
-            ]
-        }
     },
     {
         "id": 37,
