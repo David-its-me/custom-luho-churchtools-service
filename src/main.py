@@ -1,81 +1,73 @@
-from typing import Union
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from services.date_data_service import DateDataService
-from starlette.responses import FileResponse
-from services.polling_service import PollingService
-from services.calendar_manager import CalendarManager
-from pydantic import BaseModel
+from churchtools.ct_client.ct_api_client import CTApiClient
+from churchtools.ct_client.ct_posts_client import CTPostsClient
+import json
 
-app = FastAPI()
-polling_service: PollingService = PollingService()
-calendar_manager: CalendarManager = CalendarManager(polling_service)
-date_service: DateDataService = DateDataService(polling_service, calendar_manager)
+from churchtools.ct_data_model.post.ct_posts import CTPosts
+from propresenter.pro_file_io import pro_file
+import presentation_pb2
 
-@app.on_event("startup")
-async def startup_event() -> None:
-    """tasks to do at server startup"""
-    # Poll once in the beginning, which takes a bit longer. After that the values are cached for 1 hours
-    try: # If a problem occours the try catch clause ensures, that the whole server is still able to start.
-        date_service.get_upcomming_date(0) 
-    except:
-        pass
-    
+import propresenter.pro_file_builder.pro_slide_builder as slide_builder
 
-@app.get("/")
-def read_root():
-    return read_static_content(asset_type="html", path="main.html")
+ct_api_client = CTApiClient()
 
-@app.get("/slide/upcommingEvents/{slideCount}")
-def read_root():
-    return read_static_content(asset_type="html", path="main.html")
+# Login into the api
+ct_api_client.open_connection()
 
-@app.get("/static/{asset_type}/{path}")
-def read_static_content(asset_type: str, path: str):
-    return FileResponse("../static/{}/{}".format(asset_type, path))
+# Who am I
+# print(json.dumps(ct_api_client.who_am_i(), indent=4))
 
-@app.get("/html/{path}")
-def read_html(path: str):
-    return read_static_content(asset_type="html", path=path)
+ct_posts_service = CTPostsClient(
+    ct_api_client.get_domain_base_path(), ct_api_client.get_session()
+)
 
-@app.get("/icons/{path}")
-def read_html(path: str):
-    return read_static_content(asset_type="icons", path=path)
+# Fetch Posts
+posts = CTPosts(ct_posts_service.fetch_posts_list())
+print(posts.get_image_urls())
 
-@app.get("/script/{path}")
-def read_script(path: str):
-    return read_static_content(asset_type="script", path=path)
+presentation: presentation_pb2.Presentation = pro_file.read("Vorlagen", "Announcements")
+# print(presentation.content_destination)
+print(presentation.name)
 
-@app.get("/css/{path}")
-def read_css(path: str):
-    return read_static_content(asset_type="css", path=path)
+# cue === Folien
+print(len(presentation.cues))
+print(dir(presentation.cues[0]))
 
-@app.get("/date/upcomming/{nextUpcomming}")
-def get_event(nextUpcomming: int):
-    return date_service.get_upcomming_date(nextUpcomming)
+# action
+print(len(presentation.cues[0].actions))
+# Slide ACTION_TYPE_PRESENTATION_SLIDE
+print(presentation.cues[0].actions[0])
+# Announcement Makro ACTION_TYPE_MACRO
+print(presentation.cues[0].actions[1])
 
+# rv.data.Action.SlideType
+# nur verfügbar mit ACTION_TYPE_PRESENTATION_SLIDE
+print(presentation.cues[0].actions[0].slide)
 
+# slide == oneof PresentationSlide | PropSlide
 
-@app.get("/test")
-def test():
-    return polling_service.api.get_AllEventData_ajax(431)
+# presentation typ PresentationSlide
+print(presentation.cues[0].actions[0].slide.presentation)
+# base_slide typ Slide
+print(presentation.cues[0].actions[0].slide.presentation.base_slide)
+presentation.cues[0].actions[0].slide.presentation.base_slide.CopyFrom(slide_builder.create_slide())
+print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide))
 
-@app.get("/test2")
-def test2():
-    return DateDataService._tag_rule({"descriptionSequence": ["<biblicalBook>", "<#1>"], "replacement": ["<biblicalBook>", " <#1>"]})
-    
+#print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide.elements[0]))
+'''
+print(
+    dir(
+        presentation.cues[0]
+        .actions[0]
+        .slide.presentation.base_slide.elements[0]
+        .element
+    )
+)
+'''
 
+presentation.name =  "Announcements_generated"
 
-class Visibility(BaseModel):
-    visible: bool
-
-
-@app.get("/calendar/{id}/visible")
-def get_calendar_visibility(id: int):
-    return {"visible": calendar_manager.is_calendar_visible(id)}
-
-
-@app.post("/calendar/{id}/visible")
-def set_calendar_visibility(id: int, visibility_data: Visibility):
-    return calendar_manager.set_calendar_visibility(id = id, visible=visibility_data.visible)
-
+pro_file.write(
+    "Vorlagen",
+    "Announcements_generated",
+    presentation,
+)
