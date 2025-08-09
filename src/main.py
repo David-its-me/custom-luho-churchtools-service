@@ -24,6 +24,8 @@ ct_posts_client = CTPostsFetcher(
 )
 
 # Fetch Posts
+print("Lade Beiträge von Churtools...")
+print()
 posts = CTPosts(ct_posts_client.fetch_posts_list())
 
 

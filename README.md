@@ -10,6 +10,7 @@ Required packages:
 pip install --no-cache-dir --upgrade git+https://github.com/bensteUEM/ChurchToolsAPI.git@1.5.2
 pip install protobuf
 pip install userpaths
+pip install pytz
 ```
 
 ### Compile Protocol Buffers
