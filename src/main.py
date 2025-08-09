@@ -1,12 +1,15 @@
 from churchtools.ct_client.ct_api_client import CTApiClient
-from churchtools.ct_client.ct_posts_client import CTPostsClient
+from churchtools.ct_client.ct_posts_fetcher import CTPostsFetcher
 import json
 
 from churchtools.ct_data_model.post.ct_posts import CTPosts
-from propresenter.pro_file_io import pro_file
-import presentation_pb2
+from propresenter.file_io import pro_file
+from propresenter.pb_auto_generated import presentation_pb2
 
-import propresenter.pro_file_builder.pro_slide_builder as slide_builder
+from custom_luho_presentation_builder.announcement import create_announcement_presentation
+from propresenter.presentation_builder.slide_builder import create_random_background_color_slide
+from propresenter.presentation_builder.presentation_builder import create_empty_presentation
+
 
 ct_api_client = CTApiClient()
 
@@ -16,41 +19,43 @@ ct_api_client.open_connection()
 # Who am I
 # print(json.dumps(ct_api_client.who_am_i(), indent=4))
 
-ct_posts_service = CTPostsClient(
+ct_posts_client = CTPostsFetcher(
     ct_api_client.get_domain_base_path(), ct_api_client.get_session()
 )
 
 # Fetch Posts
-posts = CTPosts(ct_posts_service.fetch_posts_list())
-print(posts.get_image_urls())
+posts = CTPosts(ct_posts_client.fetch_posts_list())
+
+
+print(json.dumps(ct_posts_client.fetch_posts_list(), indent=4))
 
 presentation: presentation_pb2.Presentation = pro_file.read("Vorlagen", "Announcements")
 # print(presentation.content_destination)
-print(presentation.name)
+#print(presentation.name)
 
 # cue === Folien
-print(len(presentation.cues))
-print(dir(presentation.cues[0]))
+#print(len(presentation.cues))
+#print(dir(presentation.cues[0]))
 
 # action
-print(len(presentation.cues[0].actions))
+#print(len(presentation.cues[0].actions))
 # Slide ACTION_TYPE_PRESENTATION_SLIDE
-print(presentation.cues[0].actions[0])
+#print(presentation.cues[0].actions[0])
 # Announcement Makro ACTION_TYPE_MACRO
-print(presentation.cues[0].actions[1])
+#print(presentation.cues[0].actions[1])
 
 # rv.data.Action.SlideType
 # nur verfügbar mit ACTION_TYPE_PRESENTATION_SLIDE
-print(presentation.cues[0].actions[0].slide)
+#print(presentation.cues[0].actions[0].slide)
 
 # slide == oneof PresentationSlide | PropSlide
 
 # presentation typ PresentationSlide
-print(presentation.cues[0].actions[0].slide.presentation)
+#print(presentation.cues[0].actions[0].slide.presentation)
 # base_slide typ Slide
-print(presentation.cues[0].actions[0].slide.presentation.base_slide)
-presentation.cues[0].actions[0].slide.presentation.base_slide.CopyFrom(slide_builder.create_slide())
-print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide))
+# print(presentation.cues[0].actions[0].slide.presentation.base_slide.elements[0])
+#presentation.cues[0].actions[0].slide.presentation.base_slide.CopyFrom(create_random_background_color_slide())
+#print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide))
 
 #print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide.elements[0]))
 '''
@@ -64,10 +69,26 @@ print(
 )
 '''
 
-presentation.name =  "Announcements_generated"
+presentation.name =  "Test"
+
+#print("////////////////////////////////////////")
+
+#print(presentation.cues[0].actions[0].slide.presentation.transition)
+#print(dir(presentation.cues[0].actions[0].slide.presentation))
+#new_presentation.cues.append(createCueWith(create_slide()))
+#print(new_presentation.cues[0])
+#print(presentation.cue_groups)
+#print(presentation.cues[0].uuid)
+
+new_presentation = create_announcement_presentation(posts, ct_api_client)
 
 pro_file.write(
     "Vorlagen",
-    "Announcements_generated",
+    "Test",
     presentation,
+)
+pro_file.write(
+    "Vorlagen",
+    "Announcements_generated",
+    new_presentation,
 )
