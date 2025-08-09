@@ -47,11 +47,7 @@ def image(image_path: str) -> Slide.Element:
     if "." in image_path:
         format = image_path.split(".")[1]
 
-    return Slide.Element(
-        element=Graphics.Element(
-            opacity=1,
-            uuid=generate_random_uuid(),
-            hidden=False,
+        element = empty_rectangle(
             bounds=Graphics.Rect(
                 origin=Graphics.Point(
                     x=0,
@@ -62,8 +58,9 @@ def image(image_path: str) -> Slide.Element:
                     height=1080,
                 ),
             ),
-            path=__default_bezier_path(),
-            fill=Graphics.Fill(
+        )
+        element.element.fill.CopyFrom(
+            Graphics.Fill(
                 enable=True,
                 media=Media(
                     uuid=generate_random_uuid(),
@@ -87,42 +84,71 @@ def image(image_path: str) -> Slide.Element:
                                 size=Graphics.Size(
                                     width=1920,
                                     height=1080,
-                                )
+                                ),
                             )
                         )
-                    )
+                    ),
                 ),
-            )
+            ),
         ),
-    )
+    return element
 
 
-def pink_box_element() -> Slide.Element:
+def empty_rectangle(
+    bounds: Graphics.Rect = Graphics.Rect(
+        origin=Graphics.Point(
+            x=870,
+            y=470,
+        ),
+        size=Graphics.Size(
+            width=180,
+            height=180,
+        ),
+    ),
+) -> Slide.Element:
     return Slide.Element(
         element=Graphics.Element(
             opacity=1,
             uuid=generate_random_uuid(),
             hidden=False,
-            bounds=Graphics.Rect(
-                origin=Graphics.Point(
-                    x=870,
-                    y=470,
-                ),
-                size=Graphics.Size(
-                    width=180,
-                    height=180,
-                ),
-            ),
+            bounds=bounds,
             path=__default_bezier_path(),
-            fill=Graphics.Fill(
-                color=Color(
-                    red=1,
-                    green=0,
-                    blue=1,
-                    alpha=1,
-                ),
-                enable=True,
-            ),
+        ),
+    )
+
+
+def rectangle(
+    bounds: Graphics.Rect = Graphics.Rect(
+        origin=Graphics.Point(
+            x=870,
+            y=470,
+        ),
+        size=Graphics.Size(
+            width=180,
+            height=180,
+        ),
+    ),
+    color: Color = Color(
+        red=1,
+        green=0,
+        blue=1,
+        alpha=1,
+    ),
+    text: str = "",
+    text_color: Color = Color(red=0, green=0, blue=0, alpha=1),
+) -> Slide.Element:
+    element = empty_rectangle(bounds=bounds)
+    element.element.fill.CopyFrom(
+        Graphics.Fill(
+            color=color,
+            enable=True,
+        ),
+    )
+    return element
+
+
+"""
+
             stroke=Graphics.Stroke(
                 width=20,
                 color=Color(
@@ -134,71 +160,33 @@ def pink_box_element() -> Slide.Element:
                 enable=True,
                 style=Graphics.Stroke.Style.STYLE_SOLID_LINE,
             ),
-        ),
-    )
+"""
 
 
 def __default_bezier_path() -> Graphics.Path:
     return Graphics.Path(
-            closed=True,
-            shape=Graphics.Path.Shape(type=Graphics.Path.Shape.TYPE_RECTANGLE),
-            points=[
-                {
-                    "point" : {
-                        "x": 0.0,
-                        "y": 0.0
-                    },
-                    "q0": {
-                        "x": 0.0,
-                        "y": 0.0
-                    },
-                    "q1": {
-                        "x": 0.0,
-                        "y": 0.0
-                    }
-                },
-                {
-                    "point" : {
-                        "x": 1.0,
-                        "y": 0.0
-                    },
-                    "q0": {
-                        "x": 1.0,
-                        "y": 0.0
-                    },
-                    "q1": {
-                        "x": 1.0,
-                        "y": 0.0
-                    }
-                },
-                {
-                    "point" : {
-                        "x": 1.0,
-                        "y": 1.0
-                    },
-                    "q0": {
-                        "x": 1.0,
-                        "y": 1.0
-                    },
-                    "q1": {
-                        "x": 1.0,
-                        "y": 1.0
-                    }
-                },
-                {
-                    "point" : {
-                        "x": 0.0,
-                        "y": 1.0
-                    },
-                    "q0": {
-                        "x": 0.0,
-                        "y": 1.0
-                    },
-                    "q1": {
-                        "x": 0.0,
-                        "y": 1.0
-                    }
-                }
-            ]
-        
+        closed=True,
+        shape=Graphics.Path.Shape(type=Graphics.Path.Shape.TYPE_RECTANGLE),
+        points=[
+            {
+                "point": {"x": 0.0, "y": 0.0},
+                "q0": {"x": 0.0, "y": 0.0},
+                "q1": {"x": 0.0, "y": 0.0},
+            },
+            {
+                "point": {"x": 1.0, "y": 0.0},
+                "q0": {"x": 1.0, "y": 0.0},
+                "q1": {"x": 1.0, "y": 0.0},
+            },
+            {
+                "point": {"x": 1.0, "y": 1.0},
+                "q0": {"x": 1.0, "y": 1.0},
+                "q1": {"x": 1.0, "y": 1.0},
+            },
+            {
+                "point": {"x": 0.0, "y": 1.0},
+                "q0": {"x": 0.0, "y": 1.0},
+                "q1": {"x": 0.0, "y": 1.0},
+            },
+        ],
     )

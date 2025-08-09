@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 import time
 import json
-from repository_classes.calendar_date import CalendarDate
+from churchtools.ct_data_model.date.calendar_date import CalendarDate
 from services.calendar_manager import CalendarManager
 from services.polling_service import PollingService
 from functools import cmp_to_key

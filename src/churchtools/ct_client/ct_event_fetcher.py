@@ -1,16 +1,15 @@
 import os
-import time
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 import pytz
 import json
 from churchtools_api.churchtools_api import ChurchToolsApi
-from repository_classes.calendar_date import CalendarDate
-from repository_classes.my_date import MyDate
-from repository_classes.my_time import MyTime
+from churchtools.ct_data_model.date.calendar_date import CalendarDate
+from churchtools.ct_data_model.date.my_date import MyDate
+from churchtools.ct_data_model.date.my_time import MyTime
 
 
-class CTEventClient():
+class CTEventFetcher():
     
     
     def __init__(self):

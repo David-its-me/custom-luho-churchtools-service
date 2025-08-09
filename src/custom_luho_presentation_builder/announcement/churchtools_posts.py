@@ -1,38 +1,37 @@
 # Churchtools API Client
 from churchtools.ct_client.ct_api_client import CTApiClient
 from churchtools.ct_client.ct_image_fetcher import CTImageFetcher
+from churchtools.ct_client.ct_posts_fetcher import CTPostsFetcher
 
 # Churchtools data model
 from churchtools.ct_data_model.post.ct_posts import CTPosts, CTPost
 
-# Propresenter assets
+# Propresenter file system
 from propresenter.file_io import pro_assets
 
 # Propresenter protobuf
+from propresenter.presentation_builder.standard_colors import *
 from propresenter.pb_auto_generated.presentation_pb2 import Presentation
-from propresenter.pb_auto_generated.slide_pb2 import Slide
-from propresenter.presentation_builder.presentation_builder import (
-    create_empty_presentation,
-)
-from propresenter.presentation_builder.transition_builder import cube_transition
+from propresenter.pb_auto_generated.cue_pb2 import Cue
+from propresenter.pb_auto_generated.basicTypes_pb2 import Color
 from propresenter.presentation_builder.cue_builder import (
     createCue,
     generate_cue_group_from_cues,
 )
 from propresenter.presentation_builder.slide_builder import (
-    create_random_background_color_slide,
     create_empty_slide,
 )
-from propresenter.presentation_builder.element_builder import pink_box_element, image
+from propresenter.presentation_builder.element_builder import image
 
 from datetime import datetime, timedelta
 import pytz as timezone
+
 
 ##################################
 ### CONFIG
 ##################################
 slide_duration = 10.0
-transition_duration = 1.0
+post_not_older_than_weeks = 26
 ##################################
 
 
@@ -56,11 +55,11 @@ def __pretty_print_post_info(post: CTPost):
 
 def __filter_posts(posts: list[CTPost]) -> list[CTPost]:
     # Only include post with visibility 'group_visible'
-    print("Filtere Beiträge nach Sichtbarkeit")
+    print("Filtere Beiträge nach Sichtbarkeit ...")
     posts = list(filter(lambda post: post.is_visibility_not_restricted(), posts))
 
     # Only include when today is between publishedDate and expirationDate
-    print("Filtere Beiträge Sichtbarkeitszeitraum")
+    print("Filtere Beiträge nach Veröffentlichungszeitraum ...")
     posts = list(
         filter(
             lambda post: post.is_publicity_period_inside(datetime.now(tz=timezone.utc)),
@@ -69,58 +68,69 @@ def __filter_posts(posts: list[CTPost]) -> list[CTPost]:
     )
 
     # Only include post which are younger than 6 months
-    
-    print("Filtere Beiträge die nicht älter als 6 Monate (=26 Wochen) als sind")
+    print(
+        "Filtere Beiträge heraus, die älter als {} Wochen als sind ...".format(
+            post_not_older_than_weeks
+        )
+    )
     posts = list(
         filter(
-            lambda post: post.get_last_edited_date() + timedelta(weeks=26)
+            lambda post: post.get_last_edited_date()
+            + timedelta(weeks=post_not_older_than_weeks)
             > datetime.now(tz=timezone.utc),
             posts,
         )
     )
+    print()
 
     return posts
 
 
-def create_announcement_presentation(
-    posts: CTPosts, ct_api_client: CTApiClient
-) -> Presentation:
-
-    print("Erstelle Announcement Präsentation")
-    print()
-
-    presentation: Presentation = create_empty_presentation()
-
-    # Configure the loop transition
-    presentation.transition.CopyFrom(
-        cube_transition(transition_duration=transition_duration)
-    )
-    presentation.slide_show_duration = slide_duration
-    presentation.timeline.CopyFrom(
-        Presentation.Timeline(
-            loop=True, duration=(slide_duration - transition_duration)
-        )
-    ),
-
-    ct_image_fetcher = CTImageFetcher(
+def __fetch_filtered_posts_data(ct_api_client: CTApiClient) -> list[CTPost]:
+    ct_posts_client = CTPostsFetcher(
         ct_api_client.get_domain_base_path(), ct_api_client.get_session()
     )
 
+    # Fetch Posts
+    print("Lade Beiträge von Churchtools ...")
+    print()
+    posts = CTPosts(ct_posts_client.fetch_posts_list())
+
     posts = __filter_posts(posts.posts)
+
+    return posts
+
+
+def __fetch_and_add_ct_post_images_to_presentation(
+    ct_api_client: CTApiClient, posts: list[CTPost], presentation: Presentation
+) -> Presentation:
+    
+    ct_image_fetcher = CTImageFetcher(
+        ct_api_client.get_domain_base_path(), ct_api_client.get_session()
+    )
+    cues: list[Cue] = []
+
     for post in posts:
         __pretty_print_post_info(post)
         filename = __fetch_image_and_store_in_pro_assets(post, ct_image_fetcher)
         slide = create_empty_slide()
         slide.elements.append(image(pro_assets.get_relative_path(filename)))
-        presentation.cues.append(createCue(slide, completion_time=10))
+        cue = createCue(slide, completion_time=slide_duration)
+        cues.append(cue)
+        presentation.cues.append(cue)
 
-    first_slide = create_empty_slide()
-    first_slide.elements.append(pink_box_element())
-    presentation.cues.append(createCue(first_slide, completion_time=5))
+    presentation.cue_groups.append(
+        generate_cue_group_from_cues(
+            cues,
+            color=churchtools_blue(),
+            label="Churchtools Beiträge",
+        )
+    )
+    return presentation
 
-    second_slide = create_empty_slide()
-    second_slide.elements.append(image("Media/Assets/Podcast.png"))
-    presentation.cues.append(createCue(second_slide, completion_time=5))
-
-    presentation.cue_groups.append(generate_cue_group_from_cues(presentation.cues))
+def add_slides(presentation: Presentation, ct_api_client: CTApiClient, ) -> Presentation:
+    posts = __fetch_filtered_posts_data(ct_api_client)
+    presentation = __fetch_and_add_ct_post_images_to_presentation(
+        ct_api_client, posts, presentation
+    )
     return presentation

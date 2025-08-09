@@ -8,7 +8,6 @@ def __get_path(library: str, filename: str):
 
 def read(library: str, filename: str) -> presentation_pb2.Presentation:
     path = __get_path(library, filename)
-    print(path)
     presentation = presentation_pb2.Presentation()
     try:
         with open(path, "rb") as file_data:

@@ -1,5 +1,5 @@
-from repository_classes.my_date import MyDate
-from repository_classes.my_time import MyTime
+from churchtools.ct_data_model.date.my_date import MyDate
+from churchtools.ct_data_model.date.my_time import MyTime
 
 class CalendarDate():
 
