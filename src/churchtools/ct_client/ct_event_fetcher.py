@@ -1,3 +1,4 @@
+import ast
 import os
 import logging
 from datetime import datetime, timezone
@@ -20,7 +21,7 @@ class CTEventFetcher():
             self.ct_users = ast.literal_eval(users_string)
             logging.info('using connection details provided with ENV variables')
         else:
-            with open("../secret/churchtools_credentials.json") as credential_file:
+            with open("secret/churchtools_credentials.json") as credential_file:
                 secret_data = json.load(credential_file)
                 self.ct_token = secret_data["ct_token"]
                 self.ct_domain = secret_data["ct_domain"]
@@ -30,7 +31,7 @@ class CTEventFetcher():
         self.api = ChurchToolsApi(domain=self.ct_domain, ct_token=self.ct_token)
         
         # On startup load all available services
-        with open("../custom-configuration/services.json", "w+") as services_file:
+        with open("custom-configuration/services.json", "w+") as services_file:
             json.dump(self.api.get_services(), services_file, indent=4)
 
     
@@ -85,7 +86,7 @@ class CTEventFetcher():
             minute=local_time.minute)
 
     def get_services(self) -> dict:
-        with open("../custom-configuration/services.json") as services_file:
+        with open("custom-configuration/services.json") as services_file:
             try:
                 return json.load(services_file)
             except: 

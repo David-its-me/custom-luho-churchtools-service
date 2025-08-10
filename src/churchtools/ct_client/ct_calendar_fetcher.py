@@ -1,17 +1,16 @@
+import ast
 import os
-import time
 import logging
 from datetime import datetime, timedelta, timezone
 import pytz
 import json
 from churchtools_api.churchtools_api import ChurchToolsApi
-from repository_classes.calendar_date import CalendarDate
-from repository_classes.my_date import MyDate
-from repository_classes.my_time import MyTime
+from churchtools.ct_data_model.date.calendar_date import CalendarDate
+from churchtools.ct_data_model.date.my_date import MyDate
+from churchtools.ct_data_model.date.my_time import MyTime
 
 
-class CTCalendarClient():
-    
+class CTCalendarFetcher():
     
     def __init__(self):
         if 'CT_TOKEN' in os.environ:
@@ -21,7 +20,7 @@ class CTCalendarClient():
             self.ct_users = ast.literal_eval(users_string)
             logging.info('using connection details provided with ENV variables')
         else:
-            with open("../secret/churchtools_credentials.json") as credential_file:
+            with open("secret/churchtools_credentials.json") as credential_file:
                 secret_data = json.load(credential_file)
                 self.ct_token = secret_data["ct_token"]
                 self.ct_domain = secret_data["ct_domain"]
@@ -29,11 +28,6 @@ class CTCalendarClient():
             logging.info('using connection details provided from secrets folder')
 
         self.api = ChurchToolsApi(domain=self.ct_domain, ct_token=self.ct_token)
-        
-        # On startup load all available services
-        with open("../custom-configuration/services.json", "w+") as services_file:
-            json.dump(self.api.get_services(), services_file, indent=4)
-
     
     def _extract_date(self, isoDateString: str) -> MyDate:
         result_date = datetime.strptime(isoDateString, '%Y-%m-%dT%H:%M:%S%z').astimezone().date()

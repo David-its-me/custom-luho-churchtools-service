@@ -93,7 +93,6 @@ def __fetch_filtered_posts_data(ct_api_client: CTApiClient) -> list[CTPost]:
 
     # Fetch Posts
     print("Lade Beiträge von Churchtools ...")
-    print()
     posts = CTPosts(ct_posts_client.fetch_posts_list())
 
     posts = __filter_posts(posts.posts)
@@ -128,7 +127,12 @@ def __fetch_and_add_ct_post_images_to_presentation(
     )
     return presentation
 
-def add_slides(presentation: Presentation, ct_api_client: CTApiClient, ) -> Presentation:
+def add_slides(presentation: Presentation) -> Presentation:
+    
+    ct_api_client = CTApiClient()
+    # Login into the api
+    ct_api_client.open_connection()
+
     posts = __fetch_filtered_posts_data(ct_api_client)
     presentation = __fetch_and_add_ct_post_images_to_presentation(
         ct_api_client, posts, presentation

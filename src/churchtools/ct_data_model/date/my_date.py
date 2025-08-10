@@ -20,9 +20,9 @@ class MyDate():
                     day=obj["day"],
                     weekday=obj["weekday"])
 
-    def get_month_abbreviaton(self) -> str:
+    def get_month_abbreviation(self) -> str:
         result:str = ""
-        with open("../custom-configuration/month_abbreviations.json") as file:
+        with open("custom-configuration/month_abbreviations.json") as file:
             abbreviations: dict = json.load(file)
             result = abbreviations["{}".format(self.month)]
         return result
@@ -32,7 +32,7 @@ class MyDate():
         return {
             "year": self.year,
             "month": self.month,
-            "month_abbreviation": self.get_month_abbreviaton(),
+            "month_abbreviation": self.get_month_abbreviation(),
             "day": self.day,
             "weekday": self.weekday
         }

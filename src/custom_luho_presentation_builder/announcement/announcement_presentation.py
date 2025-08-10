@@ -40,12 +40,12 @@ def __create_empty_announcement_base_presentation() -> Presentation:
     return presentation
 
 
-def create_announcement_presentation(ct_api_client: CTApiClient) -> Presentation:
+def create_announcement_presentation() -> Presentation:
     print("Erstelle Announcement Präsentation:")
     print()
 
     presentation = __create_empty_announcement_base_presentation()
-    presentation = churchtools_posts.add_slides(presentation, ct_api_client)
+    presentation = churchtools_posts.add_slides(presentation)
     presentation = default_slides.add_slides(presentation)
     presentation = churchtools_dates.add_slides(presentation)
 

@@ -12,8 +12,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2019-01-30T20:44:52Z",
-            "modifiedPid": 1
+            "modifiedPerson": {
+                "id": 1
+            }
         },
         "visible": false,
         "filterRules": {
@@ -54,7 +60,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "group"
+        "type": "group",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 21,
@@ -69,12 +79,22 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2019-01-30T20:46:59Z",
-            "modifiedPid": 1
+            "modifiedPerson": {
+                "id": 1
+            }
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "group"
+        "type": "group",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 24,
@@ -89,8 +109,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2019-01-30T20:47:35Z",
-            "modifiedPid": 1
+            "modifiedPerson": {
+                "id": 1
+            }
         },
         "filterRules": {
             "includeTitles": [
@@ -130,7 +156,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "group"
+        "type": "group",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 27,
@@ -145,8 +175,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2019-01-30T20:48:05Z",
-            "modifiedPid": 1
+            "modifiedPerson": {
+                "id": 1
+            }
         },
         "filterRules": {
             "includeTitles": [
@@ -186,7 +222,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "group"
+        "type": "group",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 30,
@@ -201,8 +241,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2019-01-30T20:52:31Z",
-            "modifiedPid": 1
+            "modifiedPerson": {
+                "id": 1
+            }
         },
         "visible": false,
         "filterRules": {
@@ -243,7 +289,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "church"
+        "type": "church",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 35,
@@ -258,8 +308,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2022-11-17T09:25:29Z",
-            "modifiedPid": 156
+            "modifiedPerson": {
+                "id": 156
+            }
         },
         "filterRules": {
             "includeTitles": [
@@ -302,12 +358,16 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": 0,
-        "type": "church"
+        "type": "church",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 37,
-        "name": "Gemeinde Kalender ",
-        "nameTranslated": "Gemeinde Kalender ",
+        "name": "Gemeinde Kalender",
+        "nameTranslated": "Gemeinde Kalender",
         "sortKey": 0,
         "color": "#0560ab",
         "isPublic": true,
@@ -317,8 +377,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2023-01-30T09:00:14Z",
-            "modifiedPid": 60
+            "modifiedPerson": {
+                "id": 60
+            }
         },
         "visible": true,
         "filterRules": {
@@ -522,8 +588,12 @@
             ]
         },
         "syncToEvTermine": false,
-        "evTermineEventTypeId": null,
-        "type": "church"
+        "evTermineEventTypeId": 0,
+        "type": "church",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 38,
@@ -538,8 +608,14 @@
         "campusId": null,
         "eventTemplateId": 0,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2023-01-30T10:13:08Z",
-            "modifiedPid": 53
+            "modifiedPerson": {
+                "id": 53
+            }
         },
         "visible": false,
         "filterRules": {
@@ -580,7 +656,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "group"
+        "type": "group",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 39,
@@ -595,8 +675,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2023-04-19T10:00:29Z",
-            "modifiedPid": 156
+            "modifiedPerson": {
+                "id": 156
+            }
         },
         "visible": false,
         "filterRules": {
@@ -637,7 +723,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "group"
+        "type": "group",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 41,
@@ -652,8 +742,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2023-05-17T08:05:34Z",
-            "modifiedPid": 53
+            "modifiedPerson": {
+                "id": 53
+            }
         },
         "visible": false,
         "filterRules": {
@@ -694,7 +790,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "church"
+        "type": "church",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 44,
@@ -709,8 +809,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2023-09-04T10:03:51Z",
-            "modifiedPid": 53
+            "modifiedPerson": {
+                "id": 53
+            }
         },
         "visible": false,
         "filterRules": {
@@ -751,7 +857,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "church"
+        "type": "church",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 45,
@@ -766,8 +876,14 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2023-10-09T22:26:24Z",
-            "modifiedPid": 60
+            "modifiedPerson": {
+                "id": 60
+            }
         },
         "visible": false,
         "filterRules": {
@@ -808,7 +924,11 @@
         },
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "group"
+        "type": "group",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 48,
@@ -823,13 +943,23 @@
         "campusId": null,
         "eventTemplateId": null,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2023-12-11T07:57:36Z",
-            "modifiedPid": 53
+            "modifiedPerson": {
+                "id": 53
+            }
         },
         "visible": false,
         "syncToEvTermine": false,
         "evTermineEventTypeId": null,
-        "type": "church"
+        "type": "church",
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        }
     },
     {
         "id": 51,
@@ -847,14 +977,24 @@
         "eventTemplateId": null,
         "type": "church",
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2024-01-29T11:24:17Z",
-            "modifiedPid": 53
+            "modifiedPerson": {
+                "id": 53
+            }
+        },
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
         }
     },
     {
         "id": 53,
-        "name": "Vermietungen",
-        "nameTranslated": "Vermietungen",
+        "name": "Vermietungen oder private Veranstaltungen",
+        "nameTranslated": "Vermietungen oder private Veranstaltungen",
         "sortKey": 0,
         "color": "#f83a22",
         "isPublic": true,
@@ -862,14 +1002,24 @@
         "randomUrl": "Jf74YaDa3HnzTx1n82aKHC7auZeNKzwg",
         "iCalSourceUrl": "",
         "syncToEvTermine": false,
-        "evTermineEventTypeId": null,
+        "evTermineEventTypeId": 0,
         "campusId": null,
         "eventTemplateId": null,
         "type": "church",
         "visible": false,
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2024-03-13T11:48:25Z",
-            "modifiedPid": 53
+            "modifiedPerson": {
+                "id": 53
+            }
+        },
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
         }
     },
     {
@@ -877,7 +1027,7 @@
         "name": "YoungLife",
         "nameTranslated": "YoungLife",
         "sortKey": 0,
-        "color": "#0dbf7b",
+        "color": "#8f0dbf",
         "isPublic": false,
         "isPrivate": false,
         "randomUrl": "lvVHH2bI85P6lC1R66P2AUzrLyZfXOEL",
@@ -889,8 +1039,18 @@
         "visible": false,
         "type": "group",
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2024-04-05T08:26:21Z",
-            "modifiedPid": 60
+            "modifiedPerson": {
+                "id": 60
+            }
+        },
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
         }
     },
     {
@@ -909,8 +1069,48 @@
         "eventTemplateId": null,
         "type": "group",
         "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
             "modifiedDate": "2024-09-24T11:43:46Z",
-            "modifiedPid": 156
+            "modifiedPerson": {
+                "id": 156
+            }
+        },
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
         }
+    },
+    {
+        "id": 61,
+        "name": "Jungenschaft",
+        "nameTranslated": "Jungenschaft",
+        "sortKey": 0,
+        "type": "group",
+        "color": "#267565",
+        "randomUrl": "fVRmyWFAdpPlwpNWlE8gyez7gqZeOOcZ",
+        "iCalSourceUrl": null,
+        "syncToEvTermine": false,
+        "evTermineEventTypeId": null,
+        "campusId": null,
+        "eventTemplateId": null,
+        "meta": {
+            "createdDate": "2025-06-16T08:05:42Z",
+            "createdPerson": {
+                "id": 0
+            },
+            "modifiedDate": "2025-04-18T12:21:46Z",
+            "modifiedPerson": {
+                "id": 61
+            }
+        },
+        "@deprecated": {
+            "isPublic": "type",
+            "isPrivate": "type"
+        },
+        "isPublic": false,
+        "isPrivate": false
     }
 ]

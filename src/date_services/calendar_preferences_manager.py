@@ -1,31 +1,31 @@
-from services.polling_service import PollingService
+from churchtools.ct_client.ct_calendar_fetcher import CTCalendarFetcher
 import json
 
-class CalendarManager:
+class CalendarPreferencesManager:
      
-    def __init__(self, polling_service: PollingService) -> None:
-        self.polling_service = polling_service
+    def __init__(self, ct_calendar_fetcher: CTCalendarFetcher) -> None:
+        self.ct_calendar_fetcher = ct_calendar_fetcher
         self.update_local_calendar_data()
 
     def get_local_calendar_data(self) -> dict:
-        with open("../custom-configuration/calendar_settings.json") as settings_file:
+        with open("custom-configuration/calendar_settings.json") as settings_file:
             try:
                 return json.load(settings_file)
             except: 
                 pass
         return []
 
-    def get_calendar_ids(self) -> [int]:
+    def get_calendar_ids(self) -> list[int]:
         local_data: dict = self.get_local_calendar_data()
-        result: [] = []
+        result: list = []
         for calendar in local_data:
             if "id" in calendar:
                 result.append(calendar["id"])
         
         return result
     
-    def get_visible_calendar_ids(self) -> [int]:
-        ids: [int] = self.get_calendar_ids()
+    def get_visible_calendar_ids(self) -> list[int]:
+        ids: list[int] = self.get_calendar_ids()
         return list(filter(lambda value: self.is_calendar_visible(value), ids))
     
 
@@ -43,10 +43,10 @@ class CalendarManager:
         return False
 
 
-    def update_local_calendar_data(self, overwrite_arguments: [dict] = []) -> dict:
+    def update_local_calendar_data(self, overwrite_arguments: list[dict] = []) -> dict:
         local_calendar_data = self.get_local_calendar_data()            
-        with open("../custom-configuration/calendar_settings.json", "w+") as settings_file:
-            church_tools_calendar_data: dict = self.polling_service.get_calendar_list()
+        with open("custom-configuration/calendar_settings.json", "w+") as settings_file:
+            church_tools_calendar_data: dict = self.ct_calendar_fetcher.get_calendar_list()
             # update with data from ChurchTools
             for remote_calendar in church_tools_calendar_data:
                 if "id" in remote_calendar:

@@ -37,9 +37,8 @@ def __get_default_slides() -> list[Slide]:
 
     return slides
 
-
 def add_slides(presentation: Presentation) -> Presentation:
-    print("Füge Standard Folien hinzu")
+    print("Füge Standard Folien hinzu ...")
     print()
     cues: list[Cue] = []
     for slide in __get_default_slides():

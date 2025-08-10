@@ -4,15 +4,9 @@ import json
 from churchtools.ct_data_model.post.ct_posts import CTPosts
 from propresenter.pb_auto_generated.presentation_pb2 import Presentation
 
-from custom_luho_presentation_builder.announcement.presentation import create_announcement_presentation
+from custom_luho_presentation_builder.announcement.announcement_presentation import create_announcement_presentation
 from propresenter.presentation_builder.slide_builder import create_slide_with_random_background_color
 from propresenter.presentation_builder.presentation_builder import create_empty_presentation
-
-
-ct_api_client = CTApiClient()
-
-# Login into the api
-ct_api_client.open_connection()
 
 # Who am I
 # print(json.dumps(ct_api_client.who_am_i(), indent=4))
@@ -65,4 +59,4 @@ print(
 #print(presentation.cue_groups)
 #print(presentation.cues[0].uuid)
 
-new_presentation = create_announcement_presentation(ct_api_client)
+new_presentation = create_announcement_presentation()

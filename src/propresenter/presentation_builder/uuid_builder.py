@@ -1,7 +1,6 @@
 
 from propresenter.pb_auto_generated.basicTypes_pb2 import UUID
 import random
-import string
 
 def __random_character() -> str:
     return random.choice('0123456789abcdef')
