@@ -39,24 +39,5 @@ from propresenter.presentation_builder.presentation_builder import create_empty_
 #print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide))
 
 #print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide.elements[0]))
-'''
-print(
-    dir(
-        presentation.cues[0]
-        .actions[0]
-        .slide.presentation.base_slide.elements[0]
-        .element
-    )
-)
-'''
-
-#print("////////////////////////////////////////")
-
-#print(presentation.cues[0].actions[0].slide.presentation.transition)
-#print(dir(presentation.cues[0].actions[0].slide.presentation))
-#new_presentation.cues.append(createCueWith(create_slide()))
-#print(new_presentation.cues[0])
-#print(presentation.cue_groups)
-#print(presentation.cues[0].uuid)
 
 new_presentation = create_announcement_presentation()
