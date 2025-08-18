@@ -45,9 +45,9 @@ def create_announcement_presentation() -> Presentation:
     print()
 
     presentation = __create_empty_announcement_base_presentation()
-    presentation = churchtools_posts.add_slides(presentation)
-    presentation = default_slides.add_slides(presentation)
-    presentation = churchtools_dates.add_slides(presentation)
+    presentation = churchtools_posts.add_slides(presentation, slide_duration, post_not_older_than_weeks)
+    presentation = default_slides.add_slides(presentation, slide_duration)
+    presentation = churchtools_dates.add_slides(presentation, slide_duration)
 
     print("Speichere Announcement Präsentation")
     print()

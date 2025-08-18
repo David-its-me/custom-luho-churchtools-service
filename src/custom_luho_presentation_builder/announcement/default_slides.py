@@ -11,12 +11,6 @@ from propresenter.presentation_builder.cue_builder import (
     generate_cue_group_from_cues,
 )
 
-##################################
-### CONFIG
-##################################
-slide_duration = 10.0
-##################################
-
 
 def __get_default_slides() -> list[Slide]:
     presentation: Presentation = pro_file.read(
@@ -37,7 +31,8 @@ def __get_default_slides() -> list[Slide]:
 
     return slides
 
-def add_slides(presentation: Presentation) -> Presentation:
+
+def add_slides(presentation: Presentation, slide_duration) -> Presentation:
     print("Füge Standard Folien hinzu ...")
     print()
     cues: list[Cue] = []
@@ -47,6 +42,8 @@ def add_slides(presentation: Presentation) -> Presentation:
         presentation.cues.append(cue)
 
     presentation.cue_groups.append(
-        generate_cue_group_from_cues(cues, label="Bibliothek/Vorlagen/Announcement_Standard_Folien")
+        generate_cue_group_from_cues(
+            cues, label="Bibliothek/Vorlagen/Announcement_Standard_Folien"
+        )
     )
     return presentation

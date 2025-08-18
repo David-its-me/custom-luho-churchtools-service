@@ -5,8 +5,10 @@ from churchtools.ct_data_model.post.ct_posts import CTPosts
 from propresenter.pb_auto_generated.presentation_pb2 import Presentation
 
 from custom_luho_presentation_builder.announcement.announcement_presentation import create_announcement_presentation
-from propresenter.presentation_builder.slide_builder import create_slide_with_random_background_color
-from propresenter.presentation_builder.presentation_builder import create_empty_presentation
+
+
+new_presentation = create_announcement_presentation()
+
 
 # Who am I
 # print(json.dumps(ct_api_client.who_am_i(), indent=4))
@@ -39,5 +41,3 @@ from propresenter.presentation_builder.presentation_builder import create_empty_
 #print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide))
 
 #print(dir(presentation.cues[0].actions[0].slide.presentation.base_slide.elements[0]))
-
-new_presentation = create_announcement_presentation()

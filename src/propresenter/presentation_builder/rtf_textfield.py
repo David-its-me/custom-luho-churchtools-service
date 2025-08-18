@@ -3,7 +3,7 @@ from propresenter.presentation_builder.standard_colors import *
 from propresenter.pb_auto_generated.graphicsData_pb2 import Graphics
 
 
-def rtf(
+def rtf_textfield(
     text: str,
     font=Graphics.Text.Attributes.Font(
         name="Roboto",

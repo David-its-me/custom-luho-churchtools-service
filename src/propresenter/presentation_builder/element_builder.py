@@ -3,7 +3,7 @@ from propresenter.pb_auto_generated.graphicsData_pb2 import Graphics, Media
 from propresenter.pb_auto_generated.basicTypes_pb2 import Color, URL
 from propresenter.presentation_builder.uuid_builder import generate_random_uuid
 from propresenter.presentation_builder.standard_colors import *
-from propresenter.presentation_builder.rtf import *
+from propresenter.presentation_builder.rtf_textfield import *
 
 
 def __text_scroller() -> Slide.Element.TextScroller:
@@ -21,7 +21,7 @@ def text(
         family="Roboto",
         face="Regular",
         bold=False,
-        italic=False
+        italic=False,
     ),
     color: Color = black(),
     stroke_color: Color = white(),
@@ -39,8 +39,8 @@ def text(
             height=810,
         ),
     ),
-    horizontal_alignment: Graphics.Text.Attributes.Paragraph.Alignment=Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_CENTER,
-    vertical_alignment: Graphics.Text=Graphics.Text.VERTICAL_ALIGNMENT_MIDDLE,
+    horizontal_alignment: Graphics.Text.Attributes.Paragraph.Alignment = Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_CENTER,
+    vertical_alignment: Graphics.Text = Graphics.Text.VERTICAL_ALIGNMENT_MIDDLE,
 ) -> Graphics.Text:
     element = empty_rectangle(bounds=bounds)
     element.element.fill.CopyFrom(Graphics.Fill(color=white(), enable=False))
@@ -71,69 +71,71 @@ def text(
             is_superscript_standardized=True,
             transformDelimiter="  •  ",
             chord_pro=Graphics.Text.ChordPro(color=Color(alpha=1)),
-            rtf_data=rtf(
+            rtf_data=rtf_textfield(
                 text=text,
                 font=font,
                 color=color,
                 margins=margins,
                 stroke_color=stroke_color,
                 background_color=background_color,
-                horizontal_alignment=horizontal_alignment
+                horizontal_alignment=horizontal_alignment,
             ),
         )
     )
     return element
 
 
-def image(image_path: str) -> Slide.Element:
+def image(
+    image_path: str,
+    # Default bounds is a full HD slide
+    bounds: Graphics.Rect = Graphics.Rect(
+        origin=Graphics.Point(
+            x=0,
+            y=0,
+        ),
+        size=Graphics.Size(
+            width=1920,
+            height=1080,
+        ),
+    ),
+) -> Slide.Element:
     format = None
     if "." in image_path:
         format = image_path.split(".")[1]
 
-        element = empty_rectangle(
-            bounds=Graphics.Rect(
-                origin=Graphics.Point(
-                    x=0,
-                    y=0,
-                ),
-                size=Graphics.Size(
-                    width=1920,
-                    height=1080,
-                ),
-            ),
-        )
-        element.element.fill.CopyFrom(
-            Graphics.Fill(
-                enable=True,
-                media=Media(
-                    uuid=generate_random_uuid(),
-                    url=URL(
-                        local=URL.LocalRelativePath(
-                            root=URL.LocalRelativePath.Root.ROOT_SHOW,
-                            path=image_path,
-                        ),
-                        platform=URL.Platform.PLATFORM_UNKNOWN,
+    element = empty_rectangle(bounds)
+    element.element.fill.CopyFrom(
+        Graphics.Fill(
+            enable=True,
+            media=Media(
+                uuid=generate_random_uuid(),
+                url=URL(
+                    local=URL.LocalRelativePath(
+                        root=URL.LocalRelativePath.Root.ROOT_SHOW,
+                        path=image_path,
                     ),
-                    metadata=Media.Metadata(
-                        format=format,
-                    ),
-                    image=Media.ImageTypeProperties(
-                        drawing=Media.DrawingProperties(
-                            custom_image_bounds=Graphics.Rect(
-                                origin=Graphics.Point(
-                                    x=0.0,
-                                    y=0.0,
-                                ),
-                                size=Graphics.Size(
-                                    width=1920,
-                                    height=1080,
-                                ),
-                            )
+                    platform=URL.Platform.PLATFORM_UNKNOWN,
+                ),
+                metadata=Media.Metadata(
+                    format=format,
+                ),
+                image=Media.ImageTypeProperties(
+                    drawing=Media.DrawingProperties(
+                        custom_image_bounds=Graphics.Rect(
+                            origin=Graphics.Point(
+                                x=0.0,
+                                y=0.0,
+                            ),
+                            size=Graphics.Size(
+                                width=1920,
+                                height=1080,
+                            ),
                         )
-                    ),
+                    )
                 ),
             ),
         ),
+    ),
     return element
 
 

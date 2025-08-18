@@ -1,5 +1,10 @@
 
 import userpaths
+import shutil
+
+def move_from(folder_path: str, filename: str):
+    shutil.copyfile("{}/{}".format(folder_path, filename), get_absolute_path(filename))
+
 
 def get_relative_path(filename: str):
     return "Media/Assets/{}".format(filename)

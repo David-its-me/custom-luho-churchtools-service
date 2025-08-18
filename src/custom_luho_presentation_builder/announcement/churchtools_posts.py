@@ -27,14 +27,6 @@ from datetime import datetime, timedelta
 import pytz as timezone
 
 
-##################################
-### CONFIG
-##################################
-slide_duration = 10.0
-post_not_older_than_weeks = 26
-##################################
-
-
 def __fetch_image_and_store_in_pro_assets(
     post: CTPost, ct_image_fetcher: CTImageFetcher
 ) -> str:
@@ -53,9 +45,9 @@ def __pretty_print_post_info(post: CTPost):
     print()
 
 
-def __filter_posts(posts: list[CTPost]) -> list[CTPost]:
+def __filter_posts(posts: list[CTPost], post_not_older_than_weeks: int) -> list[CTPost]:
     # Only include post with visibility 'group_visible'
-    print("Filtere Beiträge nach Sichtbarkeit ...")
+    print("Filtere Beiträge nach Gruppen-Sichtbarkeit ...")
     posts = list(filter(lambda post: post.is_visibility_not_restricted(), posts))
 
     # Only include when today is between publishedDate and expirationDate
@@ -86,7 +78,9 @@ def __filter_posts(posts: list[CTPost]) -> list[CTPost]:
     return posts
 
 
-def __fetch_filtered_posts_data(ct_api_client: CTApiClient) -> list[CTPost]:
+def __fetch_filtered_posts_data(
+    ct_api_client: CTApiClient, post_not_older_than_weeks: int
+) -> list[CTPost]:
     ct_posts_client = CTPostsFetcher(
         ct_api_client.get_domain_base_path(), ct_api_client.get_session()
     )
@@ -95,15 +89,18 @@ def __fetch_filtered_posts_data(ct_api_client: CTApiClient) -> list[CTPost]:
     print("Lade Beiträge von Churchtools ...")
     posts = CTPosts(ct_posts_client.fetch_posts_list())
 
-    posts = __filter_posts(posts.posts)
+    posts = __filter_posts(posts.posts, post_not_older_than_weeks)
 
     return posts
 
 
 def __fetch_and_add_ct_post_images_to_presentation(
-    ct_api_client: CTApiClient, posts: list[CTPost], presentation: Presentation
+    ct_api_client: CTApiClient,
+    posts: list[CTPost],
+    presentation: Presentation,
+    slide_duration: int,
 ) -> Presentation:
-    
+
     ct_image_fetcher = CTImageFetcher(
         ct_api_client.get_domain_base_path(), ct_api_client.get_session()
     )
@@ -127,14 +124,20 @@ def __fetch_and_add_ct_post_images_to_presentation(
     )
     return presentation
 
-def add_slides(presentation: Presentation) -> Presentation:
-    
+
+def add_slides(
+    presentation: Presentation, slide_duration: int, post_not_older_than_weeks: int
+) -> Presentation:
+
     ct_api_client = CTApiClient()
     # Login into the api
     ct_api_client.open_connection()
 
-    posts = __fetch_filtered_posts_data(ct_api_client)
+    posts = __fetch_filtered_posts_data(ct_api_client, post_not_older_than_weeks)
     presentation = __fetch_and_add_ct_post_images_to_presentation(
-        ct_api_client, posts, presentation
+        ct_api_client,
+        posts,
+        presentation,
+        slide_duration,
     )
     return presentation
