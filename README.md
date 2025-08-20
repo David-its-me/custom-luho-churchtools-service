@@ -7,10 +7,11 @@ Install a python version.
 Required packages:
 
 ```
-pip install --no-cache-dir --upgrade git+https://github.com/bensteUEM/ChurchToolsAPI.git@1.5.2
+pip install git+https://github.com/bensteUEM/ChurchToolsAPI.git@v1.8.0#egg=churchtools-api
 pip install protobuf
 pip install userpaths
 pip install pytz
+pip install tzlocal
 ```
 
 ### Compile Protocol Buffers

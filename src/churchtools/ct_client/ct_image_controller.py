@@ -5,7 +5,7 @@ from typing import Literal
 logger = logging.getLogger(__name__)
 
 
-class CTImageFetcher:
+class CTImageController:
 
     def __init__(self, domain_base_path: str, session) -> None:
         self.session = session
@@ -18,7 +18,7 @@ class CTImageFetcher:
     ) -> str:
         return "?fm={}&q=80&w={}&h={}&crop=original".format(type, width, height)
 
-    def fetch_image_png(self, image_url: str) -> bytes:
+    def get_image_png(self, image_url: str) -> bytes:
 
         headers = {
             "accept": "image/avif,image/webp,image/png,image/svg+xml,image/*,*/*"

@@ -1,7 +1,7 @@
 import math
 from churchtools.ct_client.ct_api_client import CTApiClient
-from churchtools.ct_client.ct_calendar_fetcher import CTCalendarFetcher
-from churchtools.ct_client.ct_event_fetcher import CTEventFetcher
+from churchtools.ct_client.ct_calendar_controller import CTCalendarController
+from churchtools.ct_client.ct_event_controller import CTEventController
 from churchtools.ct_data_model.date.calendar_date import CalendarDate
 from custom_luho_presentation_builder.announcement.churchtools_dates_data_service import (
     AnnouncementDatesDataService,
@@ -115,13 +115,35 @@ def __add_date_details_icons(
     date: CalendarDate, slide: Slide, origin=Graphics.Point
 ) -> Slide:
 
-    slide = __add_icon("icon_children_white.png", slide, origin)
-    origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
-    slide = __add_icon("icon_communion_white.png", slide, origin)
-    origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
-    slide = __add_icon("icon_livestream.png", slide, origin)
-    origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
-    slide = __add_icon("icon_location_white.png", slide, origin)
+    if date.has_children_church:
+        slide = __add_icon("icon_children_white.png", slide, origin)
+        origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
+    if date.has_communion:
+        slide = __add_icon("icon_communion_white.png", slide, origin)
+        origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
+    if date.has_livestream:
+        slide = __add_icon("icon_livestream.png", slide, origin)
+        origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
+    if len(date.location) > 0:
+        slide = __add_icon("icon_location_white.png", slide, origin)
+        origin = Graphics.Point(x=origin.x + icon_size + int(icon_horizontal_space/2), y=origin.y)
+        slide.elements.append(
+            text(
+                date.location,
+                color=white(),
+                bounds=Graphics.Rect(
+                    origin=origin,
+                    size=Graphics.Size(width=924, height=50),
+                ),
+                font=Graphics.Text.Attributes.Font(
+                    name="Roboto",
+                    size=40,
+                ),
+                horizontal_alignment=Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_LEFT,
+                vertical_alignment=Graphics.Text.VERTICAL_ALIGNMENT_MIDDLE,
+            )
+        )
+        origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
 
     return slide
 
@@ -134,8 +156,13 @@ def __date_time_and_speaker_pretty_string(date: CalendarDate) -> str:
 
     while len(minute) < 2:
         minute = "0" + minute
+    
+    time_pretty = "{}:{} Uhr".format(hour, minute)
+    
+    if len(date.speaker) > 0:
+        return time_pretty + " - mit {}".format(date.speaker)
 
-    return "{}:{} Uhr - mit {}".format(hour, minute, date.speaker)
+    return time_pretty
 
 
 def __add_date_time_and_speaker(date: CalendarDate, slide: Slide, origin=Graphics.Point) -> Slide:
@@ -276,15 +303,15 @@ def __get_date_slides(calendar_dates: CalendarDate) -> list[Slide]:
     return slides
 
 
-def __load_events():
-    ct_calendar_fetcher = CTCalendarFetcher()
-    ct_event_fetcher = CTEventFetcher()
+def __load_events(ct_api_client: CTApiClient):
+    ct_calendar_controller = CTCalendarController(ct_api_client.get_benste_uem_api())
+    ct_event_controller = CTEventController(ct_api_client.get_benste_uem_api())
     calendar_preferences_manager = CalendarPreferencesManager(
-        ct_calendar_fetcher=ct_calendar_fetcher
+        ct_calendar_controller=ct_calendar_controller
     )
     dates_data_service = AnnouncementDatesDataService(
-        ct_calendar_fetcher=ct_calendar_fetcher,
-        ct_event_fetcher=ct_event_fetcher,
+        ct_calendar_controller=ct_calendar_controller,
+        ct_event_controller=ct_event_controller,
         calendar_preferences_manager=calendar_preferences_manager,
     )
 
@@ -292,9 +319,9 @@ def __load_events():
     return calendar_dates
 
 
-def add_slides(presentation: Presentation, slide_duration: int) -> Presentation:
-    calendar_dates = __load_events()
-    print("Erstelle Termin Folien ...")
+def create(presentation: Presentation, slide_duration: int, ct_api_client: CTApiClient) -> Presentation:
+    calendar_dates = __load_events(ct_api_client)
+    print("Erstelle Termin Folien")
     print()
     cues: list[Cue] = []
     for slide in __get_date_slides(calendar_dates):

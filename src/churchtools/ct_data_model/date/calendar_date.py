@@ -15,10 +15,10 @@ class CalendarDate():
                  description: str = "",
                  title: str = "",
                  has_livestream: bool = False,
-                 has_childrenschurch: bool = False,
+                 has_children_church: bool = False,
                  has_communion: bool = False,
                  location: str = "",
-                 sermontext: str = "",
+                 sermon_text: str = "",
                  speaker: str = "",
                  is_event: bool = False,
                  category_color: str = "#0560ab",
@@ -34,10 +34,10 @@ class CalendarDate():
             self.description: str = description
         self.title: str = title
         self.has_livestream: bool = has_livestream
-        self.has_childrenschurch: bool = has_childrenschurch
+        self.has_children_church: bool = has_children_church
         self.has_communion: bool = has_communion
         self.location: str = location
-        self.sermontext: str = sermontext
+        self.sermontext: str = sermon_text
         self.speaker: str = speaker
         self.is_event: bool = is_event
         self.category_color: str = category_color
@@ -56,10 +56,10 @@ class CalendarDate():
                             description=obj["description"],
                             title=obj["title"],
                             has_livestream=obj["has_livestream"],
-                            has_childrenschurch=obj["has_childrenschurch"],
+                            has_children_church=obj["has_childrenschurch"],
                             has_communion=obj["has_communion"],
                             location=obj["location"],
-                            sermontext=obj["sermontext"],
+                            sermon_text=obj["sermontext"],
                             speaker=obj["speaker"],
                             is_event=obj["is_event"],
                             category_color=obj["category_color"],
@@ -76,7 +76,7 @@ class CalendarDate():
             "description": self.description,
             "title": self.title,
             "has_livestream": self.has_livestream,
-            "has_childrenschurch": self.has_childrenschurch,
+            "has_childrenschurch": self.has_children_church,
             "has_communion": self.has_communion,
             "location": self.location,
             "sermontext": self.sermontext,

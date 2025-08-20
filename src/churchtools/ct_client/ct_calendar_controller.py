@@ -10,24 +10,10 @@ from churchtools.ct_data_model.date.my_date import MyDate
 from churchtools.ct_data_model.date.my_time import MyTime
 
 
-class CTCalendarFetcher():
+class CTCalendarController():
     
-    def __init__(self):
-        if 'CT_TOKEN' in os.environ:
-            self.ct_token = os.environ['CT_TOKEN']
-            self.ct_domain = os.environ['CT_DOMAIN']
-            users_string = os.environ['CT_USERS']
-            self.ct_users = ast.literal_eval(users_string)
-            logging.info('using connection details provided with ENV variables')
-        else:
-            with open("secret/churchtools_credentials.json") as credential_file:
-                secret_data = json.load(credential_file)
-                self.ct_token = secret_data["ct_token"]
-                self.ct_domain = secret_data["ct_domain"]
-                self.ct_users = secret_data["ct_users"]
-            logging.info('using connection details provided from secrets folder')
-
-        self.api = ChurchToolsApi(domain=self.ct_domain, ct_token=self.ct_token)
+    def __init__(self, api: ChurchToolsApi):
+        self.api = api
     
     def _extract_date(self, isoDateString: str) -> MyDate:
         result_date = datetime.strptime(isoDateString, '%Y-%m-%dT%H:%M:%S%z').astimezone().date()
@@ -121,10 +107,10 @@ class CTCalendarFetcher():
                     category=date['calendar']['name'],
                     is_event=False,
                     has_livestream=False,
-                    has_childrenschurch=False,
+                    has_children_church=False,
                     has_communion=False,
                     location = self._resolve_address_to_string(address=date["address"], note=date["note"]),
-                    sermontext = "",
+                    sermon_text = "",
                     speaker = "",
                     category_color = date['calendar']['color'],
                     category_id=date['calendar']['id']

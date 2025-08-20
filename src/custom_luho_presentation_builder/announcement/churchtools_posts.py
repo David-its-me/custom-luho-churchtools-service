@@ -1,7 +1,6 @@
 # Churchtools API Client
 from churchtools.ct_client.ct_api_client import CTApiClient
-from churchtools.ct_client.ct_image_fetcher import CTImageFetcher
-from churchtools.ct_client.ct_posts_fetcher import CTPostsFetcher
+from churchtools.ct_client.ct_image_controller import CTImageController
 
 # Churchtools data model
 from churchtools.ct_data_model.post.ct_posts import CTPosts, CTPost
@@ -28,10 +27,10 @@ import pytz as timezone
 
 
 def __fetch_image_and_store_in_pro_assets(
-    post: CTPost, ct_image_fetcher: CTImageFetcher
+    post: CTPost, ct_image_controller: CTImageController
 ) -> str:
     image_url = post.get_url_first_image()
-    image: bytes = ct_image_fetcher.fetch_image_png(image_url=image_url)
+    image: bytes = ct_image_controller.get_image_png(image_url=image_url)
     churchtools_image_id = image_url.split("/")[-1]
     filename = "{}.png".format(churchtools_image_id)
     pro_assets.write(filename, image)
@@ -47,11 +46,11 @@ def __pretty_print_post_info(post: CTPost):
 
 def __filter_posts(posts: list[CTPost], post_not_older_than_weeks: int) -> list[CTPost]:
     # Only include post with visibility 'group_visible'
-    print("Filtere Beiträge nach Gruppen-Sichtbarkeit ...")
+    print("Filtere Beiträge nach Gruppen-Sichtbarkeit")
     posts = list(filter(lambda post: post.is_visibility_not_restricted(), posts))
 
     # Only include when today is between publishedDate and expirationDate
-    print("Filtere Beiträge nach Veröffentlichungszeitraum ...")
+    print("Filtere Beiträge nach Veröffentlichungszeitraum")
     posts = list(
         filter(
             lambda post: post.is_publicity_period_inside(datetime.now(tz=timezone.utc)),
@@ -61,7 +60,7 @@ def __filter_posts(posts: list[CTPost], post_not_older_than_weeks: int) -> list[
 
     # Only include post which are younger than 6 months
     print(
-        "Filtere Beiträge heraus, die älter als {} Wochen als sind ...".format(
+        "Filtere Beiträge heraus, die älter als {} Wochen als sind".format(
             post_not_older_than_weeks
         )
     )
@@ -81,15 +80,12 @@ def __filter_posts(posts: list[CTPost], post_not_older_than_weeks: int) -> list[
 def __fetch_filtered_posts_data(
     ct_api_client: CTApiClient, post_not_older_than_weeks: int
 ) -> list[CTPost]:
-    ct_posts_client = CTPostsFetcher(
-        ct_api_client.get_domain_base_path(), ct_api_client.get_session()
-    )
 
     # Fetch Posts
     print("Lade Beiträge von Churchtools ...")
-    posts = CTPosts(ct_posts_client.fetch_posts_list())
+    posts = CTPosts(ct_api_client.get_benste_uem_api().get_posts())
 
-    posts = __filter_posts(posts.posts, post_not_older_than_weeks)
+    posts = __filter_posts(posts.posts_data, post_not_older_than_weeks)
 
     return posts
 
@@ -101,14 +97,14 @@ def __fetch_and_add_ct_post_images_to_presentation(
     slide_duration: int,
 ) -> Presentation:
 
-    ct_image_fetcher = CTImageFetcher(
+    ct_image_controller = CTImageController(
         ct_api_client.get_domain_base_path(), ct_api_client.get_session()
     )
     cues: list[Cue] = []
 
     for post in posts:
         __pretty_print_post_info(post)
-        filename = __fetch_image_and_store_in_pro_assets(post, ct_image_fetcher)
+        filename = __fetch_image_and_store_in_pro_assets(post, ct_image_controller)
         slide = create_empty_slide()
         slide.elements.append(image(pro_assets.get_relative_path(filename)))
         cue = createCue(slide, completion_time=slide_duration)
@@ -125,13 +121,12 @@ def __fetch_and_add_ct_post_images_to_presentation(
     return presentation
 
 
-def add_slides(
-    presentation: Presentation, slide_duration: int, post_not_older_than_weeks: int
+def create(
+    presentation: Presentation, 
+    slide_duration: int, 
+    post_not_older_than_weeks: int,
+    ct_api_client: CTApiClient
 ) -> Presentation:
-
-    ct_api_client = CTApiClient()
-    # Login into the api
-    ct_api_client.open_connection()
 
     posts = __fetch_filtered_posts_data(ct_api_client, post_not_older_than_weeks)
     presentation = __fetch_and_add_ct_post_images_to_presentation(

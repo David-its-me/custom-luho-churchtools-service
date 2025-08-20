@@ -10,30 +10,13 @@ from churchtools.ct_data_model.date.my_date import MyDate
 from churchtools.ct_data_model.date.my_time import MyTime
 
 
-class CTEventFetcher():
+class CTEventController():
     
-    
-    def __init__(self):
-        if 'CT_TOKEN' in os.environ:
-            self.ct_token = os.environ['CT_TOKEN']
-            self.ct_domain = os.environ['CT_DOMAIN']
-            users_string = os.environ['CT_USERS']
-            self.ct_users = ast.literal_eval(users_string)
-            logging.info('using connection details provided with ENV variables')
-        else:
-            with open("secret/churchtools_credentials.json") as credential_file:
-                secret_data = json.load(credential_file)
-                self.ct_token = secret_data["ct_token"]
-                self.ct_domain = secret_data["ct_domain"]
-                self.ct_users = secret_data["ct_users"]
-            logging.info('using connection details provided from secrets folder')
-
-        self.api = ChurchToolsApi(domain=self.ct_domain, ct_token=self.ct_token)
-        
+    def __init__(self, api: ChurchToolsApi):
+        self.api = api
         # On startup load all available services
         with open("custom-configuration/services.json", "w+") as services_file:
-            json.dump(self.api.get_services(), services_file, indent=4)
-
+            json.dump(api.get_services(), services_file, indent=4)
     
     def _extract_date(self, isoDateString: str) -> MyDate:
         result_date = datetime.strptime(isoDateString, '%Y-%m-%dT%H:%M:%S%z').astimezone().date()
@@ -117,8 +100,21 @@ class CTEventFetcher():
                     pass
         return False
     
-    def has_childreenschurch(self, event_id: int) -> bool:
-        potential_service_names = ["kinder", "kids"]
+    def has_children_church(self, event_id: int) -> bool:
+        potential_service_names = ["kinder", "kids", "kindergottesdienst"]
+        for service_name in potential_service_names:
+            service_name_id: int = self.get_service_id_of(service_name)
+            if service_name_id > -1:
+                try:
+                    service_count: int = self.api.get_event_services_counts_ajax(eventId=event_id, serviceId=service_name_id)[service_name_id]
+                    if service_count > 0:
+                        return True
+                except:
+                    pass
+        return False
+    
+    def has_communion(self, event_id: int) -> bool:
+        potential_service_names = ["abendmahl", "abendmahlhelfer"]
         for service_name in potential_service_names:
             service_name_id: int = self.get_service_id_of(service_name)
             if service_name_id > -1:
@@ -173,9 +169,10 @@ class CTEventFetcher():
                 category=event['calendar']['title'],
                 is_event=True,
                 speaker=self.get_speaker(event_id=event["id"]),
-                sermontext="",
-                has_childrenschurch=self.has_childreenschurch(event_id=event["id"]),
+                sermon_text="",
+                has_children_church=self.has_children_church(event_id=event["id"]),
                 has_livestream=self.has_livestream(event_id=event["id"]),
+                has_communion=self.has_communion(event_id=event["id"])
             )
             events.append(new_entry)
         

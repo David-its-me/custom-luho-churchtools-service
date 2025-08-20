@@ -8,6 +8,7 @@ import requests
 from typing import Optional
 logger = logging.getLogger(__name__)
 from churchtools_api.churchtools_api_abstract import ChurchToolsApiAbstract
+from churchtools_api.churchtools_api import ChurchToolsApi
 
 class CTApiClient(ChurchToolsApiAbstract):
 
@@ -17,10 +18,17 @@ class CTApiClient(ChurchToolsApiAbstract):
         self._token = None
         self._users = None
         self._domain = None
+        self._api = None
         self._is_connection_established = False
     
 
-    
+    def open_benste_uem_api(self):
+        self.__load_connection_details()
+        self._api = ChurchToolsApi(domain=self._domain, ct_token=self._token)
+
+    def get_benste_uem_api(self) -> ChurchToolsApi:
+        return self._api
+
     def open_connection(self):
         self.__load_connection_details()
 

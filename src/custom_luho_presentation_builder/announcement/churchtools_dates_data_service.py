@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 import time
 import json
-from churchtools.ct_client.ct_calendar_fetcher import CTCalendarFetcher
-from churchtools.ct_client.ct_event_fetcher import CTEventFetcher
+from churchtools.ct_client.ct_calendar_controller import CTCalendarController
+from churchtools.ct_client.ct_event_controller import CTEventController
 from churchtools.ct_data_model.date.calendar_date import CalendarDate
 from date_services.calendar_preferences_manager import CalendarPreferencesManager
 from functools import cmp_to_key
@@ -13,12 +13,12 @@ class AnnouncementDatesDataService:
 
     def __init__(
         self, 
-        ct_calendar_fetcher: CTCalendarFetcher, 
-        ct_event_fetcher: CTEventFetcher,
+        ct_calendar_controller: CTCalendarController, 
+        ct_event_controller: CTEventController,
         calendar_preferences_manager: CalendarPreferencesManager
     ) -> None:
-        self.ct_calendar_fetcher = ct_calendar_fetcher
-        self.ct_event_fetcher = ct_event_fetcher
+        self.ct_calendar_controller = ct_calendar_controller
+        self.ct_event_controller = ct_event_controller
         self.calendar_preferences_manager: CalendarPreferencesManager = calendar_preferences_manager
         self.prettified_dates: list[CalendarDate] = None
 
@@ -70,8 +70,8 @@ class AnnouncementDatesDataService:
                 dates[i + 1].has_livestream = (
                     dates[i].has_livestream or dates[i + 1].has_livestream
                 )
-                dates[i + 1].has_childrenschurch = (
-                    dates[i].has_childrenschurch or dates[i + 1].has_childrenschurch
+                dates[i + 1].has_children_church = (
+                    dates[i].has_children_church or dates[i + 1].has_children_church
                 )
                 dates[i + 1].has_communion = (
                     dates[i].has_communion or dates[i + 1].has_communion
@@ -480,7 +480,7 @@ class AnnouncementDatesDataService:
         # Events - Load the next 12 events
         duration_event_polling = time.time()
         print("Lade Events von Churchtools ...")
-        dates = self.ct_event_fetcher.get_events(12)
+        dates = self.ct_event_controller.get_events(12)
         duration_event_polling = time.time() - duration_event_polling
 
         # Calendar dates 1 week in advance
@@ -491,7 +491,7 @@ class AnnouncementDatesDataService:
         date_string_tomorrow: str = today.strftime("%Y-%m-%d")
         date_string_end: str = two_weeks.strftime("%Y-%m-%d")
         dates.extend(
-            self.ct_calendar_fetcher.get_calendar_dates(
+            self.ct_calendar_controller.get_calendar_dates(
                 from_=date_string_tomorrow,
                 to_=date_string_end,
                 calendar_ids=self.calendar_preferences_manager.get_visible_calendar_ids(),
@@ -499,7 +499,7 @@ class AnnouncementDatesDataService:
         )
         duration_date_polling = time.time() - duration_date_polling
 
-        print("Bereite die Daten vor ...")
+        print("Bereite die Daten vor")
 
         # Sorting dates
         duration_sorting = time.time()

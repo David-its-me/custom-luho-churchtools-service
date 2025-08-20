@@ -1,10 +1,10 @@
-from churchtools.ct_client.ct_calendar_fetcher import CTCalendarFetcher
+from churchtools.ct_client.ct_calendar_controller import CTCalendarController
 import json
 
 class CalendarPreferencesManager:
      
-    def __init__(self, ct_calendar_fetcher: CTCalendarFetcher) -> None:
-        self.ct_calendar_fetcher = ct_calendar_fetcher
+    def __init__(self, ct_calendar_controller: CTCalendarController) -> None:
+        self.ct_calendar_controller = ct_calendar_controller
         self.update_local_calendar_data()
 
     def get_local_calendar_data(self) -> dict:
@@ -46,7 +46,7 @@ class CalendarPreferencesManager:
     def update_local_calendar_data(self, overwrite_arguments: list[dict] = []) -> dict:
         local_calendar_data = self.get_local_calendar_data()            
         with open("custom-configuration/calendar_settings.json", "w+") as settings_file:
-            church_tools_calendar_data: dict = self.ct_calendar_fetcher.get_calendar_list()
+            church_tools_calendar_data: dict = self.ct_calendar_controller.get_calendar_list()
             # update with data from ChurchTools
             for remote_calendar in church_tools_calendar_data:
                 if "id" in remote_calendar:
