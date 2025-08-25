@@ -126,18 +126,16 @@ class AnnouncementDatesDataService:
             resulting_variable_matching[last_variable_name] = variable
             last_variable_name = None
 
-        return True, resulting_variable_matching
+        return (True, resulting_variable_matching)
 
     def __filter_dates(self, dates: list[CalendarDate]) -> list[CalendarDate]:
         result: list[CalendarDate] = []
         for date in dates:
             included: bool = True  # per default include events
-            calendar_data = self.calendar_preferences_manager.get_calendar_by_id(date.category_id)
+            calendar_data = self.calendar_preferences_manager.get_calendar_config_by_id(date.category_id)
             if "filterRules" in calendar_data:
                 if "includeTitles" in calendar_data["filterRules"]:
-                    for titleIncludeRule in calendar_data["filterRules"][
-                        "includeTitles"
-                    ]:
+                    for titleIncludeRule in calendar_data["filterRules"]["includeTitles"]:
                         (match, variables) = self._match_sequence(
                             date.title, titleIncludeRule
                         )
@@ -146,9 +144,7 @@ class AnnouncementDatesDataService:
                             break
 
                 if "excludeTitles" in calendar_data["filterRules"]:
-                    for titleExcludeRule in calendar_data["filterRules"][
-                        "excludeTitles"
-                    ]:
+                    for titleExcludeRule in calendar_data["filterRules"]["excludeTitles"]:
                         (match, variables) = self._match_sequence(
                             date.title, titleExcludeRule
                         )
@@ -470,6 +466,7 @@ class AnnouncementDatesDataService:
                 date = AnnouncementDatesDataService._prettify_date(
                     date, rules=rules, tag_definitions=tag_definitions
                 )
+                date.pretty_print()
 
         return dates
 
@@ -482,6 +479,8 @@ class AnnouncementDatesDataService:
         print("Lade Events von Churchtools ...")
         dates = self.ct_event_controller.get_events(12)
         duration_event_polling = time.time() - duration_event_polling
+
+        # filter
 
         # Calendar dates 1 week in advance
         duration_date_polling = time.time()
@@ -500,6 +499,7 @@ class AnnouncementDatesDataService:
         duration_date_polling = time.time() - duration_date_polling
 
         print("Bereite die Daten vor")
+        print()
 
         # Sorting dates
         duration_sorting = time.time()

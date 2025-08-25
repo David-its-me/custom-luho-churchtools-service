@@ -25,8 +25,9 @@ transition_duration = 1.0
 post_not_older_than_weeks = 26
 ##################################
 presentation_name = "Announcements_generated"
-default_slides_presentation_name = "Announcement_Standard_Folien"
-propresenter_library_name = "Vorlagen"
+default_slides_presentation_name = "Announcements"
+default_slides_library_name = "Vorlagen"
+propresenter_save_library_names = ["Vorlagen", "Default", "...aktueller GoDi"]
 churchtools_song_name = "Test"
 ##################################
 
@@ -68,7 +69,7 @@ def __upload_presentation_churchtools(ct_api_client: CTApiClient):
     # upload file
     ct_api_client.get_benste_uem_api().file_upload(
         source_filepath=pro_file.get_absolute_path(
-            library=propresenter_library_name, filename=presentation_name
+            library=propresenter_save_library_names[0], filename=presentation_name
         ),
         domain_type="song_arrangement",
         domain_identifier=announcement_song.find_default_arrangement().get_id(),
@@ -101,7 +102,7 @@ def create_announcement_presentation() -> Presentation:
     presentation = default_slides.create(
         presentation,
         slide_duration,
-        propresenter_library_name,
+        default_slides_library_name,
         default_slides_presentation_name,
     )
     print("###############")
@@ -120,13 +121,16 @@ def create_announcement_presentation() -> Presentation:
     print()
 
     print("Speichere Präsentation in Propresenter")
-    print("Bibliothek: {}".format(propresenter_library_name))
-    print("Name:       {}".format(presentation_name))
-    print()
-    pro_file.write(
-        propresenter_library_name,
-        presentation_name,
-        presentation,
-    )
+
+    for propresenter_library_name in propresenter_save_library_names:
+        print("Bibliothek: {}".format(propresenter_library_name))
+        print("Name:       {}".format(presentation_name))
+        print()
+        pro_file.write(
+            propresenter_library_name,
+            presentation_name,
+            presentation,
+        )
+
     __upload_presentation_churchtools(ct_api_client)
     return presentation

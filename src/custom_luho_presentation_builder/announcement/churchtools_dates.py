@@ -12,6 +12,8 @@ from propresenter.pb_auto_generated.presentation_pb2 import Presentation
 from propresenter.pb_auto_generated.cue_pb2 import Cue
 from propresenter.pb_auto_generated.slide_pb2 import Slide
 from propresenter.pb_auto_generated.graphicsData_pb2 import Graphics
+from propresenter.presentation_builder.chip_element_builder import chip
+from propresenter.presentation_builder.image_element_builder import image
 from propresenter.presentation_builder.standard_colors import *
 from propresenter.presentation_builder.cue_builder import (
     createCue,
@@ -20,7 +22,8 @@ from propresenter.presentation_builder.cue_builder import (
 from propresenter.presentation_builder.slide_builder import (
     create_slide_with_background_color,
 )
-from propresenter.presentation_builder.element_builder import image, rectangle, text
+from propresenter.presentation_builder.rectangle_element_builder import rectangle
+from propresenter.presentation_builder.text_element_builder import text
 
 
 ##################################
@@ -114,19 +117,51 @@ def __add_icon(filename: str, slide: Slide, origin=Graphics.Point) -> Slide:
 def __add_date_details_icons(
     date: CalendarDate, slide: Slide, origin=Graphics.Point
 ) -> Slide:
+    
+    color_hex_code = date.category_color.lstrip("#")
+    red = int(color_hex_code[0:2], 16)/255.0
+    green = int(color_hex_code[2:4], 16)/255.0
+    blue = int(color_hex_code[4:6], 16)/255.0
 
+    if len(date.category) > 0:
+        chip_element: Slide.Element = chip(
+                text=date.category,
+                color=Color(
+                    alpha=1,
+                    red=red,
+                    green=green,
+                    blue=blue,
+                ),
+                origin=Graphics.Point(
+                    y=origin.y + 5,
+                    x=origin.x
+                )
+            )
+        slide.elements.append(chip_element)
+        origin = Graphics.Point(
+            y=origin.y,
+            x=origin.x + chip_element.element.bounds.size.width + icon_horizontal_space
+        )
     if date.has_children_church:
         slide = __add_icon("icon_children_white.png", slide, origin)
-        origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
+        origin = Graphics.Point(
+            x=origin.x + icon_size + icon_horizontal_space, y=origin.y
+        )
     if date.has_communion:
         slide = __add_icon("icon_communion_white.png", slide, origin)
-        origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
+        origin = Graphics.Point(
+            x=origin.x + icon_size + icon_horizontal_space, y=origin.y
+        )
     if date.has_livestream:
         slide = __add_icon("icon_livestream.png", slide, origin)
-        origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
+        origin = Graphics.Point(
+            x=origin.x + icon_size + icon_horizontal_space, y=origin.y
+        )
     if len(date.location) > 0:
         slide = __add_icon("icon_location_white.png", slide, origin)
-        origin = Graphics.Point(x=origin.x + icon_size + int(icon_horizontal_space/2), y=origin.y)
+        origin = Graphics.Point(
+            x=origin.x + icon_size + int(icon_horizontal_space / 2), y=origin.y
+        )
         slide.elements.append(
             text(
                 date.location,
@@ -143,7 +178,9 @@ def __add_date_details_icons(
                 vertical_alignment=Graphics.Text.VERTICAL_ALIGNMENT_MIDDLE,
             )
         )
-        origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
+        origin = Graphics.Point(
+            x=origin.x + icon_size + icon_horizontal_space, y=origin.y
+        )
 
     return slide
 
@@ -156,16 +193,18 @@ def __date_time_and_speaker_pretty_string(date: CalendarDate) -> str:
 
     while len(minute) < 2:
         minute = "0" + minute
-    
+
     time_pretty = "{}:{} Uhr".format(hour, minute)
-    
+
     if len(date.speaker) > 0:
         return time_pretty + " - mit {}".format(date.speaker)
 
     return time_pretty
 
 
-def __add_date_time_and_speaker(date: CalendarDate, slide: Slide, origin=Graphics.Point) -> Slide:
+def __add_date_time_and_speaker(
+    date: CalendarDate, slide: Slide, origin=Graphics.Point
+) -> Slide:
     slide = __add_icon("icon_clock_white.png", slide, origin)
     origin = Graphics.Point(x=origin.x + icon_size + icon_horizontal_space, y=origin.y)
     slide.elements.append(
@@ -319,7 +358,9 @@ def __load_events(ct_api_client: CTApiClient):
     return calendar_dates
 
 
-def create(presentation: Presentation, slide_duration: int, ct_api_client: CTApiClient) -> Presentation:
+def create(
+    presentation: Presentation, slide_duration: int, ct_api_client: CTApiClient
+) -> Presentation:
     calendar_dates = __load_events(ct_api_client)
     print("Erstelle Termin Folien")
     print()

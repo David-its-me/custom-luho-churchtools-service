@@ -92,4 +92,11 @@ class CalendarDate():
         if self.start_time.is_before(other.start_time) != 0:
             return self.start_time.is_before(other.start_time)
         return 0
+    
+    def pretty_print(self):
+        print(self.title)
+        print("Kategorie: {}".format(self.category))
+        print("Datum:     {}.{}.{}".format(self.start_date.day, self.start_date.month, self.start_date.year))
+        print("Zeit:      {}:{} Uhr".format(self.start_time.hour, self.start_time.minute))
+        print()
 

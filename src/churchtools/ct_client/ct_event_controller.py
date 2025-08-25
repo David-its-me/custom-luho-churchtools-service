@@ -156,6 +156,7 @@ class CTEventController():
         events: list[CalendarDate] = []
 
         for event in result:
+            #print(event)
             new_entry: CalendarDate = CalendarDate(
                 id=event["appointmentId"],
                 start_date=self._extract_date(event['startDate']),
@@ -167,6 +168,7 @@ class CTEventController():
                 end_time=self._extract_time(event['endDate']),
                 title=event['name'],
                 category=event['calendar']['title'],
+                category_id=int(event['calendar']["domainIdentifier"]),
                 is_event=True,
                 speaker=self.get_speaker(event_id=event["id"]),
                 sermon_text="",

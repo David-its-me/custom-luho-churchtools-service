@@ -9,6 +9,7 @@ from churchtools.ct_data_model.post.ct_posts import CTPosts, CTPost
 from propresenter.file_io import pro_assets
 
 # Propresenter protobuf
+from propresenter.presentation_builder.image_element_builder import image
 from propresenter.presentation_builder.standard_colors import *
 from propresenter.pb_auto_generated.presentation_pb2 import Presentation
 from propresenter.pb_auto_generated.cue_pb2 import Cue
@@ -20,7 +21,6 @@ from propresenter.presentation_builder.cue_builder import (
 from propresenter.presentation_builder.slide_builder import (
     create_empty_slide,
 )
-from propresenter.presentation_builder.element_builder import image
 
 from datetime import datetime, timedelta
 import pytz as timezone
@@ -39,7 +39,7 @@ def __fetch_image_and_store_in_pro_assets(
 
 def __pretty_print_post_info(post: CTPost):
     print("{}".format(post.get_title()))
-    print("Autor: {}".format(post.get_author()))
+    print("Autor:  {}".format(post.get_author()))
     print("Gruppe: {}".format(post.get_group_name()))
     print()
 

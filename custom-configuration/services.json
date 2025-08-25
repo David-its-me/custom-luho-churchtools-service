@@ -234,7 +234,7 @@
         "allowChat": true,
         "sendReminderMails": false,
         "sendServiceRequestEmails": false,
-        "onlyAssignFromGroups": true,
+        "onlyAssignFromGroups": false,
         "groupIds": [
             59
         ],
