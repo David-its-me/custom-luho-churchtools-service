@@ -4,14 +4,17 @@
 
 Install a python version.
 
-Required packages:
+Required packages are listed in the ```requirements.txt```. From the project root folder you can run this command:
 
 ```
-pip install git+https://github.com/bensteUEM/ChurchToolsAPI.git@v1.8.0#egg=churchtools-api
-pip install protobuf
-pip install userpaths
-pip install pytz
-pip install tzlocal
+pip install --no-cache-dir --upgrade -r requirements.txt
+```
+
+## Run the code
+
+Just run the ```main.py```. From the project root folder you can run this command:
+```
+python src/main.py
 ```
 
 ### Compile Protocol Buffers
