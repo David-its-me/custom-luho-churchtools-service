@@ -1,7 +1,7 @@
 from propresenter.pb_auto_generated.graphicsData_pb2 import Graphics
 from propresenter.pb_auto_generated.slide_pb2 import Slide
 from propresenter.presentation_builder.standard_colors import *
-from propresenter.presentation_builder.uuid_builder import generate_random_uuid
+from propresenter.presentation_builder.uuid_generator import generate_random_uuid
 
 def empty_rounded_rectangle(
     bounds: Graphics.Rect = Graphics.Rect(

@@ -9,16 +9,17 @@ from churchtools.ct_data_model.post.ct_posts import CTPosts, CTPost
 from propresenter.file_io import pro_assets
 
 # Propresenter protobuf
-from propresenter.presentation_builder.image_element_builder import image
+from propresenter.presentation_builder.cue_actions.macro import create_announcement_macro
+from propresenter.presentation_builder.slide_element.image import image
 from propresenter.presentation_builder.standard_colors import *
 from propresenter.pb_auto_generated.presentation_pb2 import Presentation
 from propresenter.pb_auto_generated.cue_pb2 import Cue
 from propresenter.pb_auto_generated.basicTypes_pb2 import Color
-from propresenter.presentation_builder.cue_builder import (
+from propresenter.presentation_builder.cue import (
     createCue,
     generate_cue_group_from_cues,
 )
-from propresenter.presentation_builder.slide_builder import (
+from propresenter.presentation_builder.slide import (
     create_empty_slide,
 )
 
@@ -107,7 +108,7 @@ def __fetch_and_add_ct_post_images_to_presentation(
         filename = __fetch_image_and_store_in_pro_assets(post, ct_image_controller)
         slide = create_empty_slide()
         slide.elements.append(image(pro_assets.get_relative_path(filename)))
-        cue = createCue(slide, completion_time=slide_duration)
+        cue = createCue(slide, actions=[create_announcement_macro()], completion_time=slide_duration)
         cues.append(cue)
         presentation.cues.append(cue)
 

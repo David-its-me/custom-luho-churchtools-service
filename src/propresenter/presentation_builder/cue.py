@@ -6,7 +6,7 @@ from propresenter.pb_auto_generated.presentationSlide_pb2 import PresentationSli
 from propresenter.pb_auto_generated.presentation_pb2 import Presentation
 from propresenter.pb_auto_generated.groups_pb2 import Group
 from propresenter.presentation_builder.standard_colors import *
-from propresenter.presentation_builder.uuid_builder import (
+from propresenter.presentation_builder.uuid_generator import (
     generate_random_uuid,
     uuid_zero,
 )
@@ -45,10 +45,10 @@ def generate_cue_group_from_cues(
     return cue_group
 
 
-def createCue(slide: Slide, completion_time: float = 0.0) -> Cue:
+def createCue(slide: Slide, actions: list[Action] = [], completion_time: float = 0.0) -> Cue:
     cue = Cue(
         uuid=generate_random_uuid(),
-        actions=[__createSlideAction(slide=slide)],
+        actions=[__createSlideAction(slide=slide)] + actions,
         completion_target_uuid=uuid_zero(),
         completion_action_uuid=uuid_zero(),
         isEnabled=True,

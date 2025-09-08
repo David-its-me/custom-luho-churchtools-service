@@ -8,10 +8,10 @@ from propresenter.file_io import pro_file
 
 # Propresenter protobuf
 from propresenter.pb_auto_generated.presentation_pb2 import Presentation
-from propresenter.presentation_builder.presentation_builder import (
+from propresenter.presentation_builder.presentation import (
     create_empty_presentation,
 )
-from propresenter.presentation_builder.transition_builder import cube_transition
+from propresenter.presentation_builder.transition import dissolve_transition
 
 import custom_luho_presentation_builder.announcement.churchtools_posts as churchtools_posts
 import custom_luho_presentation_builder.announcement.default_slides as default_slides
@@ -21,7 +21,7 @@ import custom_luho_presentation_builder.announcement.churchtools_dates as church
 ### CONFIG
 ##################################
 slide_duration = 10.0
-transition_duration = 1.0
+transition_duration = 0.5
 post_not_older_than_weeks = 26
 ##################################
 presentation_name = "Announcements_generated"
@@ -36,7 +36,7 @@ def __create_empty_announcement_base_presentation() -> Presentation:
     presentation: Presentation = create_empty_presentation()
     # Configure the loop transition
     presentation.transition.CopyFrom(
-        cube_transition(transition_duration=transition_duration)
+        dissolve_transition(transition_duration=transition_duration)
     )
     presentation.slide_show_duration = slide_duration
     presentation.timeline.CopyFrom(

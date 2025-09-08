@@ -6,10 +6,11 @@ from propresenter.pb_auto_generated.presentation_pb2 import Presentation
 from propresenter.pb_auto_generated.action_pb2 import Action
 from propresenter.pb_auto_generated.slide_pb2 import Slide
 from propresenter.pb_auto_generated.cue_pb2 import Cue
-from propresenter.presentation_builder.cue_builder import (
+from propresenter.presentation_builder.cue import (
     createCue,
     generate_cue_group_from_cues,
 )
+from propresenter.presentation_builder.cue_actions.macro import create_announcement_macro
 
 
 def __get_default_slides(
@@ -47,7 +48,7 @@ def create(
     for slide in __get_default_slides(
         propresenter_library_name, default_slides_presentation_name
     ):
-        cue = createCue(slide, completion_time=slide_duration)
+        cue = createCue(slide, actions=[create_announcement_macro()], completion_time=slide_duration)
         cues.append(cue)
         presentation.cues.append(cue)
 

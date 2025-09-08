@@ -12,18 +12,19 @@ from propresenter.pb_auto_generated.presentation_pb2 import Presentation
 from propresenter.pb_auto_generated.cue_pb2 import Cue
 from propresenter.pb_auto_generated.slide_pb2 import Slide
 from propresenter.pb_auto_generated.graphicsData_pb2 import Graphics
-from propresenter.presentation_builder.chip_element_builder import chip
-from propresenter.presentation_builder.image_element_builder import image
+from propresenter.presentation_builder.cue_actions.macro import create_announcement_macro
+from propresenter.presentation_builder.slide_element.chip import chip
+from propresenter.presentation_builder.slide_element.image import image
 from propresenter.presentation_builder.standard_colors import *
-from propresenter.presentation_builder.cue_builder import (
+from propresenter.presentation_builder.cue import (
     createCue,
     generate_cue_group_from_cues,
 )
-from propresenter.presentation_builder.slide_builder import (
+from propresenter.presentation_builder.slide import (
     create_slide_with_background_color,
 )
-from propresenter.presentation_builder.rectangle_element_builder import rectangle
-from propresenter.presentation_builder.text_element_builder import text
+from propresenter.presentation_builder.slide_element.rectangle import rectangle
+from propresenter.presentation_builder.slide_element.text import text
 
 
 ##################################
@@ -366,7 +367,7 @@ def create(
     print()
     cues: list[Cue] = []
     for slide in __get_date_slides(calendar_dates):
-        cue = createCue(slide, completion_time=slide_duration)
+        cue = createCue(slide, actions=[create_announcement_macro()],completion_time=slide_duration)
         cues.append(cue)
         presentation.cues.append(cue)
 

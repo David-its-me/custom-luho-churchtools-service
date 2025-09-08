@@ -3,8 +3,8 @@
 from propresenter.pb_auto_generated.basicTypes_pb2 import URL
 from propresenter.pb_auto_generated.graphicsData_pb2 import Graphics, Media
 from propresenter.pb_auto_generated.slide_pb2 import Slide
-from propresenter.presentation_builder.rectangle_element_builder import empty_rectangle
-from propresenter.presentation_builder.uuid_builder import generate_random_uuid
+from propresenter.presentation_builder.slide_element.rectangle import empty_rectangle
+from propresenter.presentation_builder.uuid_generator import generate_random_uuid
 
 
 def image(
