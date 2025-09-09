@@ -114,6 +114,7 @@ def __fetch_and_add_ct_post_images_to_presentation(
             presentation.cues.append(cue)
         except:
             print("Für diesen Beitrag konnte kein Bild gefunden werden, oder etwas anderes hat nicht funktioniert!")
+            print("")
 
     presentation.cue_groups.append(
         generate_cue_group_from_cues(
