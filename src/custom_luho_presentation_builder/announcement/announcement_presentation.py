@@ -24,8 +24,8 @@ slide_duration = 10.0
 transition_duration = 0.5
 post_not_older_than_weeks = 26
 ##################################
-presentation_name = "Announcements_generated"
-default_slides_presentation_name = "Announcements"
+presentation_name = "Announcements"
+default_slides_presentation_name = "Announcements-Standard-Folien"
 default_slides_library_name = "Vorlagen"
 propresenter_save_library_names = ["Vorlagen", "Default", "...aktueller GoDi"]
 churchtools_song_name = "Test"
@@ -105,14 +105,14 @@ def create_announcement_presentation() -> Presentation:
         default_slides_library_name,
         default_slides_presentation_name,
     )
-    print("###############")
-    print("### Termine ###")
-    print("###############")
-    print()
-    presentation = churchtools_dates.create(
-        presentation, 
-        slide_duration, 
-        ct_api_client)
+    #print("###############")
+    #print("### Termine ###")
+    #print("###############")
+    #print()
+    #presentation = churchtools_dates.create(
+    #    presentation, 
+    #    slide_duration, 
+    #    ct_api_client)
 
     
     print("#################")
