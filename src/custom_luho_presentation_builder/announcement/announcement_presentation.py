@@ -28,7 +28,7 @@ presentation_name = "Announcements"
 default_slides_presentation_name = "Announcements-Standard-Folien"
 default_slides_library_name = "Vorlagen"
 propresenter_save_library_names = ["Vorlagen", "Default", "...aktueller GoDi"]
-churchtools_song_name = "Test"
+churchtools_song_name = "Announcements"
 ##################################
 
 

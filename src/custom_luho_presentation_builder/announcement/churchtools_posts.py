@@ -20,7 +20,7 @@ from propresenter.presentation_builder.cue import (
     generate_cue_group_from_cues,
 )
 from propresenter.presentation_builder.slide import (
-    create_empty_slide,
+    create_slide_with_background_color,
 )
 
 from datetime import datetime, timedelta
@@ -106,7 +106,7 @@ def __fetch_and_add_ct_post_images_to_presentation(
     for post in posts:
         __pretty_print_post_info(post)
         filename = __fetch_image_and_store_in_pro_assets(post, ct_image_controller)
-        slide = create_empty_slide()
+        slide = create_slide_with_background_color(background_color=black())
         slide.elements.append(image(pro_assets.get_relative_path(filename)))
         cue = createCue(slide, actions=[create_announcement_macro()], completion_time=slide_duration)
         cues.append(cue)
