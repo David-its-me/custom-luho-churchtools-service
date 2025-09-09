@@ -21,7 +21,7 @@ import custom_luho_presentation_builder.announcement.churchtools_dates as church
 ### CONFIG
 ##################################
 slide_duration = 10.0
-transition_duration = 0.5
+transition_duration = 0.2
 post_not_older_than_weeks = 26
 ##################################
 presentation_name = "Announcements"
