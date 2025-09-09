@@ -137,5 +137,6 @@ def create_announcement_presentation() -> Presentation:
     print("#####################################################")
     print("### Fertig - du kannst jetzt Propresenter öffnen. ###")
     print("#####################################################")
+    print()
 
     return presentation
