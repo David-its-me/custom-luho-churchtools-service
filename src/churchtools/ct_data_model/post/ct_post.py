@@ -67,6 +67,11 @@ class CTPost():
                 return False
             
         return True
+
+    def get_id(self):
+        if 'id' in self.post_data:
+            return self.post_data['id']
+        return None
     
     def get_last_edited_date(self) -> datetime:
         if 'lastEditedDate' in self.post_data:

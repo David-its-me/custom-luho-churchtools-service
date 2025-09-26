@@ -9,7 +9,9 @@ from churchtools.ct_data_model.post.ct_posts import CTPosts, CTPost
 from propresenter.file_io import pro_assets
 
 # Propresenter protobuf
-from propresenter.presentation_builder.cue_actions.macro import create_announcement_macro
+from propresenter.presentation_builder.cue_actions.macro import (
+    create_announcement_macro,
+)
 from propresenter.presentation_builder.slide_element.image import image
 from propresenter.presentation_builder.standard_colors import *
 from propresenter.pb_auto_generated.presentation_pb2 import Presentation
@@ -46,12 +48,13 @@ def __pretty_print_post_info(post: CTPost):
 
 
 def __filter_posts(posts: list[CTPost], post_not_older_than_weeks: int) -> list[CTPost]:
+    
     # Only include post with visibility 'group_visible'
-    print("Filtere Beiträge nach Gruppen-Sichtbarkeit")
+    print("Filtere Beiträge nach Gruppen-Sichtbarkeit.")
     posts = list(filter(lambda post: post.is_visibility_not_restricted(), posts))
 
     # Only include when today is between publishedDate and expirationDate
-    print("Filtere Beiträge nach Veröffentlichungszeitraum")
+    print("Filtere Beiträge nach Veröffentlichungszeitraum.")
     posts = list(
         filter(
             lambda post: post.is_publicity_period_inside(datetime.now(tz=timezone.utc)),
@@ -61,15 +64,20 @@ def __filter_posts(posts: list[CTPost], post_not_older_than_weeks: int) -> list[
 
     # Only include post which are younger than 6 months
     print(
-        "Filtere Beiträge heraus, die älter als {} Wochen als sind".format(
+        'Filtere Beiträge, die länger als {} Wochen nicht bearbeitet wurden UND kein Enddatum ("Archivieren am") besitzen.'.format(
             post_not_older_than_weeks
         )
     )
     posts = list(
         filter(
-            lambda post: post.get_last_edited_date()
-            + timedelta(weeks=post_not_older_than_weeks)
-            > datetime.now(tz=timezone.utc),
+            lambda post: (
+                (
+                    post.get_last_edited_date()
+                    + timedelta(weeks=post_not_older_than_weeks)
+                    > datetime.now(tz=timezone.utc)
+                )
+                or post.get_expiration_date() is not None
+            ),
             posts,
         )
     )
@@ -84,9 +92,11 @@ def __fetch_filtered_posts_data(
 
     # Fetch Posts
     print("Lade Beiträge von Churchtools ...")
-    posts = CTPosts(ct_api_client.get_benste_uem_api().get_posts())
+    # Set the limit to 200 (aka paging size). This is the maximum page size allowed by churchtools.
+    # Otherwise the default is 10, which means you could only see the first 10 posts.
+    posts = CTPosts(ct_api_client.get_benste_uem_api().get_posts(limit=200))
 
-    posts = __filter_posts(posts.posts_data, post_not_older_than_weeks)
+    posts = __filter_posts(posts.posts, post_not_older_than_weeks)
 
     return posts
 
@@ -109,11 +119,17 @@ def __fetch_and_add_ct_post_images_to_presentation(
             filename = __fetch_image_and_store_in_pro_assets(post, ct_image_controller)
             slide = create_slide_with_background_color(background_color=black())
             slide.elements.append(image(pro_assets.get_relative_path(filename)))
-            cue = createCue(slide, actions=[create_announcement_macro()], completion_time=slide_duration)
+            cue = createCue(
+                slide,
+                actions=[create_announcement_macro()],
+                completion_time=slide_duration,
+            )
             cues.append(cue)
             presentation.cues.append(cue)
         except:
-            print("Für diesen Beitrag konnte kein Bild gefunden werden, oder etwas anderes hat nicht funktioniert!")
+            print(
+                "Für diesen Beitrag konnte kein Bild gefunden werden, oder etwas anderes hat nicht funktioniert!"
+            )
             print("")
 
     presentation.cue_groups.append(
@@ -127,10 +143,10 @@ def __fetch_and_add_ct_post_images_to_presentation(
 
 
 def create(
-    presentation: Presentation, 
-    slide_duration: int, 
+    presentation: Presentation,
+    slide_duration: int,
     post_not_older_than_weeks: int,
-    ct_api_client: CTApiClient
+    ct_api_client: CTApiClient,
 ) -> Presentation:
 
     posts = __fetch_filtered_posts_data(ct_api_client, post_not_older_than_weeks)
