@@ -23,12 +23,12 @@ print("### Fertig - du kannst jetzt Propresenter öffnen. ###")
 print("#####################################################")
 print()
 print("Bitte lass dieses Fenster weiterhin geöffnet! \n"\
-      "Die Announcement Folien werden in 10 Minuten ein zweites Mal automatisch generiert. \n"\
+      "Die Announcement Folien werden in 10 Minuten ein zweites Mal automatisch erzeugt. \n"\
       "\n"\
       "Warum ist das notwendig? \n"\
-      "Falls du deine selbst erstellte ein Playlist von Zuause importierst, könnte der Fall auftreteten \n"\
-      "dass du damit die automatisch generierte Annoucment Präsentation überschreibst. Damit wir sicher stellen\n" \
-      "könnnen, dass wir die aktuellen Announcements haben, läuft dieses Skript noch einmal in 10 Minuten. \n")
+      "Falls du deine vorbereitete Playlist von Zuhause importierst, wirst du die automatisch\n"
+      "erzeugte Annoucment-Präsentation überschreiben. Damit wir trotzdem sicher stellen könnnen,\n" \
+      "dass wir die aktuellen Announcements haben, läuft dieses Skript einfach nochmal ;=).\n")
 
 time.sleep(600)
 create_announcement_presentation()
