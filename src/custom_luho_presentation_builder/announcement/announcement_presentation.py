@@ -134,9 +134,4 @@ def create_announcement_presentation() -> Presentation:
 
     __upload_presentation_churchtools(ct_api_client)
 
-    print("#####################################################")
-    print("### Fertig - du kannst jetzt Propresenter öffnen. ###")
-    print("#####################################################")
-    print()
-
     return presentation
