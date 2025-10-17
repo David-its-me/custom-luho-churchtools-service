@@ -26,11 +26,19 @@ print("Bitte lass dieses Fenster weiterhin geöffnet! \n"\
       "Die Announcement Folien werden in 10 Minuten ein zweites Mal automatisch erzeugt. \n"\
       "\n"\
       "Warum ist das notwendig? \n"\
-      "Falls du deine vorbereitete Playlist von Zuhause importierst, wirst du die automatisch\n"
-      "erzeugte Annoucment-Präsentation überschreiben. Damit wir trotzdem sicher stellen könnnen,\n" \
-      "dass wir die aktuellen Announcements haben, läuft dieses Skript einfach nochmal ;=).\n")
+      "Falls du deine vorbereitete Playlist von Zuhause importierst, wird die automatisch\n"\
+      "erzeugte Annoucment-Präsentation überschrieben. Damit wir trotzdem sicher stellen könnnen,\n"\
+      "dass wir die aktuellsten Announcements haben, läuft dieses Skript einfach nochmal ;=).\n"\
+      "\n"\
+      "Jut. Dad soll's jewesen sein an Informationen. Viel Spaß und gutes Gelingen beim Gottesdienst!\n")
 
 time.sleep(600)
+
+while(not internet_on()):
+    print("Konnte nicht mit dem Internet verbinden. Versuche es erneut in einer Minute.")
+    print()
+    time.sleep(60)
+    
 create_announcement_presentation()
 
 print("##############")
