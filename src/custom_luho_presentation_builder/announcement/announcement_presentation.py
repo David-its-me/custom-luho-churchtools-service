@@ -105,14 +105,14 @@ def create_announcement_presentation() -> Presentation:
         default_slides_library_name,
         default_slides_presentation_name,
     )
-    #print("###############")
-    #print("### Termine ###")
-    #print("###############")
-    #print()
-    #presentation = churchtools_dates.create(
-    #    presentation, 
-    #    slide_duration, 
-    #    ct_api_client)
+    print("###############")
+    print("### Termine ###")
+    print("###############")
+    print()
+    presentation = churchtools_dates.create(
+        presentation, 
+        slide_duration, 
+        ct_api_client)
 
     
     print("#################")

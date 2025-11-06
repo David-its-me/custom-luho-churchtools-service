@@ -72,7 +72,7 @@ def text(
                 stroke_color=stroke_color,
                 background_color=background_color,
                 horizontal_alignment=horizontal_alignment,
-            ),
+            )
         )
     )
     return element

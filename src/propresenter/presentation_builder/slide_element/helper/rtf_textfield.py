@@ -3,7 +3,7 @@ from propresenter.presentation_builder.standard_colors import *
 from propresenter.pb_auto_generated.graphicsData_pb2 import Graphics
 
 
-def rtf_textfield(
+def rtf_string(
     text: str,
     font=Graphics.Text.Attributes.Font(
         name="Roboto",
@@ -19,16 +19,16 @@ def rtf_textfield(
     margins: Graphics.EdgeInsets = Graphics.EdgeInsets(
         top=0, left=0, bottom=0, right=0
     ),
-    horizontal_alignment: Graphics.Text.Attributes.Paragraph.Alignment=Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_CENTER,
-) -> bytes:
-    
+    horizontal_alignment: Graphics.Text.Attributes.Paragraph.Alignment = Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_CENTER,
+) -> str:
+
     bold: str = "0"
     try:
         if font.bold:
             bold = ""
     except:
         pass
-    
+
     italic: str = "0"
     try:
         if font.italic:
@@ -37,16 +37,28 @@ def rtf_textfield(
         pass
 
     alignment: str = "c"
-    if horizontal_alignment == Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_LEFT:
+    if (
+        horizontal_alignment
+        == Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_LEFT
+    ):
         alignment = "l"
-    if horizontal_alignment == Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_CENTER:
+    if (
+        horizontal_alignment
+        == Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_CENTER
+    ):
         alignment = "c"
-    if horizontal_alignment == Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_RIGHT:
+    if (
+        horizontal_alignment
+        == Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_RIGHT
+    ):
         alignment = "r"
-    if horizontal_alignment == Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_JUSTIFIED:
+    if (
+        horizontal_alignment
+        == Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_JUSTIFIED
+    ):
         alignment = "j"
 
-    rtf_string = (
+    return (
         "{\\rtf0\\ansi\\ansicpg1252"
         ### Font ###
         + "{\\fonttbl\\f0\\fnil "
@@ -79,7 +91,6 @@ def rtf_textfield(
         + str(int(background_color.blue * 255))
         + ";"
         + "}"
-
         + "{\\*"
         ### Expanded color table ###
         + "\\expandedcolortbl;"
@@ -116,7 +127,7 @@ def rtf_textfield(
         + "\\c"
         + str(int(background_color.alpha * 100000))
         + ";"
-        +"}"
+        + "}"
         # + "{\\*\\listtable}"
         # + "{\\*\\listoverridetable}"
         ### Margins ###
@@ -131,13 +142,16 @@ def rtf_textfield(
         + str(int(margins.bottom * 20))
         + "\\pard\\li0\\fi0\\ri0"
         ### Horizontal alignment ###
-        + "\\q" + alignment
+        + "\\q"
+        + alignment
         + "\\sb0\\sa0\\sl20\\slmult0\\slleading0"
         + "\\f0"
         ### Bold ###
-        + "\\b" + bold
+        + "\\b"
+        + bold
         ### Italic ###
-        + "\\i" + italic
+        + "\\i"
+        + italic
         + "\\ul0"
         + "\\strike0"
         + "\\fs"
@@ -148,4 +162,35 @@ def rtf_textfield(
         + "}"
     )
 
-    return bytes(rtf_string, "utf-8")
+
+def rtf_textfield(
+    text: str,
+    font=Graphics.Text.Attributes.Font(
+        name="Roboto",
+        size=50,
+        family="Roboto",
+        face="Regular",
+        bold=False,
+        italic=False,
+    ),
+    color: Color = black(),
+    stroke_color: Color = white(),
+    background_color: Color = transparent(),
+    margins: Graphics.EdgeInsets = Graphics.EdgeInsets(
+        top=0, left=0, bottom=0, right=0
+    ),
+    horizontal_alignment: Graphics.Text.Attributes.Paragraph.Alignment = Graphics.Text.Attributes.Paragraph.Alignment.ALIGNMENT_CENTER,
+) -> bytes:
+
+    return bytes(
+        rtf_string(
+            text=text,
+            font=font,
+            color=color,
+            stroke_color=stroke_color,
+            background_color=background_color,
+            margins=margins,
+            horizontal_alignment=horizontal_alignment,
+        ),
+        "utf-8",
+    )

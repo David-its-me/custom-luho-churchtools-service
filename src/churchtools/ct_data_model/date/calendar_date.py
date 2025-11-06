@@ -1,3 +1,4 @@
+from datetime import datetime
 from churchtools.ct_data_model.date.my_date import MyDate
 from churchtools.ct_data_model.date.my_time import MyTime
 
@@ -92,6 +93,34 @@ class CalendarDate():
         if self.start_time.is_before(other.start_time) != 0:
             return self.start_time.is_before(other.start_time)
         return 0
+    
+    def starts_before_datetime(self, date: datetime):
+        if self.start_date.year > date.year:
+            return False
+        if self.start_date.year < date.year:
+            return True
+        
+        if self.start_date.month > date.month:
+            return False
+        if self.start_date.month < date.month:
+            return True
+        
+        if self.start_date.day > date.day:
+            return False
+        if self.start_date.day < date.day:
+            return True
+        
+        if self.start_time.hour > date.hour:
+            return False
+        if self.start_time.hour < date.hour:
+            return True
+        
+        if self.start_time.minute > date.minute:
+            return False
+        if self.start_time.minute < date.minute:
+            return True
+        
+        return True
     
     def pretty_print(self):
         print(self.title)

@@ -3,20 +3,20 @@ from propresenter.pb_auto_generated.basicTypes_pb2 import Color
 from propresenter.pb_auto_generated.graphicsData_pb2 import Graphics
 from propresenter.pb_auto_generated.slide_pb2 import Slide
 from propresenter.presentation_builder.slide_element.helper.rtf_textfield import rtf_textfield
-from propresenter.presentation_builder.slide_element.rounded_rectangle import empty_rounded_rectangle
+from propresenter.presentation_builder.slide_element.rounded_rectangle import empty_rounded_rectangle, rounded_rectangle
 from propresenter.presentation_builder.standard_colors import *
 
 
 
 def __estimate_text_width(text: str, chip_height: float) -> float:
-    return float((len(text) * 0.38 * chip_height) + chip_height + 30)
+    return float((len(text) * 0.33 * chip_height) + chip_height + 30)
 
 
 def chip(
     text: str,
     font: Graphics.Text.Attributes.Font = Graphics.Text.Attributes.Font(
         name="Roboto",
-        size=40,
+        size=35,
         family="Roboto",
         face="Regular",
         bold=False,
@@ -44,8 +44,7 @@ def chip(
             height=chip_hight,
         ),
     )
-    slide_element = empty_rounded_rectangle(bounds=bounds, roundness=1)
-    slide_element.element.fill.CopyFrom(Graphics.Fill(color=color, enable=True))
+    slide_element = rounded_rectangle(bounds=bounds, roundness=1, color=color)
     slide_element.element.text.CopyFrom(
         Graphics.Text(
             attributes=Graphics.Text.Attributes(

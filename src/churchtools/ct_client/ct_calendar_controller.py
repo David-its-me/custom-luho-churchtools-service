@@ -75,7 +75,6 @@ class CTCalendarController():
         result: dict = self.api.get_calendars()
         return result
 
-    #TODO
     def get_calendar_dates(
             self, 
             from_: str, 

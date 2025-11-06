@@ -6,7 +6,7 @@ import pytz
 import json
 from churchtools_api.churchtools_api import ChurchToolsApi
 from churchtools.ct_data_model.date.calendar_date import CalendarDate
-from churchtools.ct_data_model.date.my_date import MyDate
+from churchtools.ct_data_model.date.my_date import MyDate, fromIsoDate
 from churchtools.ct_data_model.date.my_time import MyTime
 
 
@@ -17,14 +17,6 @@ class CTEventController():
         # On startup load all available services
         with open("custom-configuration/services.json", "w+") as services_file:
             json.dump(api.get_services(), services_file, indent=4)
-    
-    def _extract_date(self, isoDateString: str) -> MyDate:
-        result_date = datetime.strptime(isoDateString, '%Y-%m-%dT%H:%M:%S%z').astimezone().date()
-        return MyDate(
-            day=result_date.day,
-            month=result_date.month,
-            year=result_date.year)
-            #weekday=result_date.weekday)
 
     @staticmethod
     def _resolve_address_to_string(address: dict, note: str="") -> str:
@@ -159,12 +151,12 @@ class CTEventController():
             #print(event)
             new_entry: CalendarDate = CalendarDate(
                 id=event["appointmentId"],
-                start_date=self._extract_date(event['startDate']),
+                start_date=fromIsoDate(event['startDate']),
                 start_time=self._extract_time(event['startDate']),
                 start_iso_datetime=event['startDate'],
                 end_iso_datetime=event['endDate'],
                 description=event['description'],
-                end_date=self._extract_date(event['endDate']),
+                end_date=fromIsoDate(event['endDate']),
                 end_time=self._extract_time(event['endDate']),
                 title=event['name'],
                 category=event['calendar']['title'],

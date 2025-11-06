@@ -46,8 +46,9 @@ def luho_blue_dark_theme():
     return Color(red=50/255.0, green=163 / 255.0, blue=255 / 255.0, alpha=1)
 
 
-def luho_gray():
-    return Color(red=170.0 / 255.0, green=178.0 / 255.0, blue=194.0 / 255.0, alpha=1)
+def dark_gray():
+    #Christian Scharfschwert designed it with (30, 30, 30, 255) but the projector in the church is not strong enough against bright sunlight
+    return Color(red=50.0 / 255.0, green=50.0 / 255.0, blue=50.0 / 255.0, alpha=1)
 
 
 def luho_gold():

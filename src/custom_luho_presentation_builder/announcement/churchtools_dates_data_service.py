@@ -4,6 +4,7 @@ import json
 from churchtools.ct_client.ct_calendar_controller import CTCalendarController
 from churchtools.ct_client.ct_event_controller import CTEventController
 from churchtools.ct_data_model.date.calendar_date import CalendarDate
+from churchtools.ct_data_model.date.my_date import MyDate, fromIsoDate
 from date_services.calendar_preferences_manager import CalendarPreferencesManager
 from functools import cmp_to_key
 import copy
@@ -12,14 +13,16 @@ import copy
 class AnnouncementDatesDataService:
 
     def __init__(
-        self, 
-        ct_calendar_controller: CTCalendarController, 
+        self,
+        ct_calendar_controller: CTCalendarController,
         ct_event_controller: CTEventController,
-        calendar_preferences_manager: CalendarPreferencesManager
+        calendar_preferences_manager: CalendarPreferencesManager,
     ) -> None:
         self.ct_calendar_controller = ct_calendar_controller
         self.ct_event_controller = ct_event_controller
-        self.calendar_preferences_manager: CalendarPreferencesManager = calendar_preferences_manager
+        self.calendar_preferences_manager: CalendarPreferencesManager = (
+            calendar_preferences_manager
+        )
         self.prettified_dates: list[CalendarDate] = None
 
     def __sort_dates(self, dates: list[CalendarDate]) -> list[CalendarDate]:
@@ -83,7 +86,7 @@ class AnnouncementDatesDataService:
         return result
 
     @staticmethod
-    def _match_sequence(text: str, sequence: list[str]) -> (bool, dict): # type: ignore
+    def _match_sequence(text: str, sequence: list[str]) -> (bool, dict):  # type: ignore
         text_copy: str = copy.deepcopy(text)  # because the text is manipulated
         if text_copy is None:
             text_copy = ""
@@ -132,10 +135,14 @@ class AnnouncementDatesDataService:
         result: list[CalendarDate] = []
         for date in dates:
             included: bool = True  # per default include events
-            calendar_data = self.calendar_preferences_manager.get_calendar_config_by_id(date.category_id)
+            calendar_data = self.calendar_preferences_manager.get_calendar_config_by_id(
+                date.category_id
+            )
             if "filterRules" in calendar_data:
                 if "includeTitles" in calendar_data["filterRules"]:
-                    for titleIncludeRule in calendar_data["filterRules"]["includeTitles"]:
+                    for titleIncludeRule in calendar_data["filterRules"][
+                        "includeTitles"
+                    ]:
                         (match, variables) = self._match_sequence(
                             date.title, titleIncludeRule
                         )
@@ -144,7 +151,9 @@ class AnnouncementDatesDataService:
                             break
 
                 if "excludeTitles" in calendar_data["filterRules"]:
-                    for titleExcludeRule in calendar_data["filterRules"]["excludeTitles"]:
+                    for titleExcludeRule in calendar_data["filterRules"][
+                        "excludeTitles"
+                    ]:
                         (match, variables) = self._match_sequence(
                             date.title, titleExcludeRule
                         )
@@ -194,8 +203,11 @@ class AnnouncementDatesDataService:
         if isinstance(result, list):
             result_str: str = ""
             for fragment in result:
-                result_str = result_str + AnnouncementDatesDataService._apply_variable_assignment(
-                    value=fragment, variabe_assignment=variable_assignment
+                result_str = (
+                    result_str
+                    + AnnouncementDatesDataService._apply_variable_assignment(
+                        value=fragment, variabe_assignment=variable_assignment
+                    )
                 )
             return result_str
 
@@ -264,7 +276,9 @@ class AnnouncementDatesDataService:
     ) -> list[dict]:
         resulting_rules: list = []
         if match_sequence_name in rule and result_sequence_name in rule:
-            for replaced_sequence in AnnouncementDatesDataService._replace_rule_tags_in_sequences(
+            for (
+                replaced_sequence
+            ) in AnnouncementDatesDataService._replace_rule_tags_in_sequences(
                 match_sequence=rule[match_sequence_name],
                 result_sequence=rule[result_sequence_name],
                 tag_definitions=tag_definitions,
@@ -388,8 +402,10 @@ class AnnouncementDatesDataService:
                 for tagged_rule in AnnouncementDatesDataService._tag_rule(
                     rule=rule, tag_definitions=tag_definitions
                 ):
-                    description_after_processing = AnnouncementDatesDataService._process_rule(
-                        description_after_processing, rule=tagged_rule, date=date
+                    description_after_processing = (
+                        AnnouncementDatesDataService._process_rule(
+                            description_after_processing, rule=tagged_rule, date=date
+                        )
                     )
         # Sermontext Rules
         sermontext_after_processing: str = copy.deepcopy(date.sermontext)
@@ -398,8 +414,10 @@ class AnnouncementDatesDataService:
                 for tagged_rule in AnnouncementDatesDataService._tag_rule(
                     rule=rule, tag_definitions=tag_definitions
                 ):
-                    sermontext_after_processing = AnnouncementDatesDataService._process_rule(
-                        sermontext_after_processing, rule=tagged_rule, date=date
+                    sermontext_after_processing = (
+                        AnnouncementDatesDataService._process_rule(
+                            sermontext_after_processing, rule=tagged_rule, date=date
+                        )
                     )
         # Location Rules
         location_after_processing: str = copy.deepcopy(date.location)
@@ -408,8 +426,10 @@ class AnnouncementDatesDataService:
                 for tagged_rule in AnnouncementDatesDataService._tag_rule(
                     rule=rule, tag_definitions=tag_definitions
                 ):
-                    location_after_processing = AnnouncementDatesDataService._process_rule(
-                        location_after_processing, rule=tagged_rule, date=date
+                    location_after_processing = (
+                        AnnouncementDatesDataService._process_rule(
+                            location_after_processing, rule=tagged_rule, date=date
+                        )
                     )
         # Category Rules
         category_after_processing: str = copy.deepcopy(date.category)
@@ -418,8 +438,10 @@ class AnnouncementDatesDataService:
                 for tagged_rule in AnnouncementDatesDataService._tag_rule(
                     rule=rule, tag_definitions=tag_definitions
                 ):
-                    category_after_processing = AnnouncementDatesDataService._process_rule(
-                        category_after_processing, rule=tagged_rule, date=date
+                    category_after_processing = (
+                        AnnouncementDatesDataService._process_rule(
+                            category_after_processing, rule=tagged_rule, date=date
+                        )
                     )
         # Category Color Rules
         category_color_after_processing: str = copy.deepcopy(date.category_color)
@@ -428,8 +450,10 @@ class AnnouncementDatesDataService:
                 for tagged_rule in AnnouncementDatesDataService._tag_rule(
                     rule=rule, tag_definitions=tag_definitions
                 ):
-                    category_color_after_processing = AnnouncementDatesDataService._process_rule(
-                        category_color_after_processing, rule=tagged_rule, date=date
+                    category_color_after_processing = (
+                        AnnouncementDatesDataService._process_rule(
+                            category_color_after_processing, rule=tagged_rule, date=date
+                        )
                     )
         # Communion Rules
         communion_after_processing: bool = copy.deepcopy(date.has_communion)
@@ -438,8 +462,10 @@ class AnnouncementDatesDataService:
                 for tagged_rule in AnnouncementDatesDataService._tag_rule(
                     rule=rule, tag_definitions=tag_definitions
                 ):
-                    communion_after_processing = AnnouncementDatesDataService._process_rule(
-                        communion_after_processing, rule=tagged_rule, date=date
+                    communion_after_processing = (
+                        AnnouncementDatesDataService._process_rule(
+                            communion_after_processing, rule=tagged_rule, date=date
+                        )
                     )
 
         # After all rules are processed we can now apply the changes to the date
@@ -471,24 +497,31 @@ class AnnouncementDatesDataService:
         return dates
 
     def get_upcoming_dates(self) -> list[CalendarDate]:
-        
+
         dates: list[CalendarDate] = []
+
+        today = datetime.now() + timedelta(days=0)
+        # Calendar dates 1 week in advance
+        max_date = today + timedelta(days=8)
 
         # Events - Load the next 12 events
         duration_event_polling = time.time()
         print("Lade Events von Churchtools ...")
-        dates = self.ct_event_controller.get_events(12)
+        dates: list[CalendarDate] = self.ct_event_controller.get_events(12)
         duration_event_polling = time.time() - duration_event_polling
 
-        # filter
+        # filter events by max_date
+        dates = list(
+            filter(
+                lambda date: date.starts_before_datetime(max_date),
+                dates,
+            )
+        )
 
-        # Calendar dates 1 week in advance
         duration_date_polling = time.time()
         print("Lade Termine aus Kalendern von Churchtools ...")
-        today = datetime.now() + timedelta(days=0)
-        two_weeks = today + timedelta(days=8)
         date_string_tomorrow: str = today.strftime("%Y-%m-%d")
-        date_string_end: str = two_weeks.strftime("%Y-%m-%d")
+        date_string_end: str = max_date.strftime("%Y-%m-%d")
         dates.extend(
             self.ct_calendar_controller.get_calendar_dates(
                 from_=date_string_tomorrow,
