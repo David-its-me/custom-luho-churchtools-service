@@ -28,9 +28,8 @@ print("Bitte lass dieses Fenster weiterhin geöffnet! \n"\
       "Warum ist das notwendig? \n"\
       "Falls du deine vorbereitete Playlist von Zuhause importierst, wird die automatisch\n"\
       "erzeugte Annoucment-Präsentation überschrieben. Damit wir trotzdem sicher stellen könnnen,\n"\
-      "dass wir die aktuellsten Announcements haben, läuft dieses Skript einfach nochmal ;=).\n"\
-      "\n"\
-      "Jut. Dad soll's jewesen sein an Informationen. Viel Spaß und gutes Gelingen beim Gottesdienst!\n")
+      "dass wir die aktuellsten Announcements haben, läuft dieses Skript gleich einfach nochmal ;=).\n"\
+      "\n")
 
 time.sleep(600)
 
