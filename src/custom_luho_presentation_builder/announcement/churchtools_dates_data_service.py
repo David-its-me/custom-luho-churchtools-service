@@ -554,18 +554,18 @@ class AnnouncementDatesDataService:
         self.prettified_dates = self.__prettify_dates(filtered_dates)
         duration_prettify = time.time() - duration_prettify
 
-        with open("logs/time-measure.json", "w+") as time_measure_file:
-            json.dump(
-                {
-                    "eventPolling": duration_event_polling,
-                    "datePolling": duration_date_polling,
-                    "sorting": duration_sorting,
-                    "merging": duration_merging,
-                    "filtering": duration_filtering,
-                    "prettify": duration_prettify,
-                },
-                time_measure_file,
-                indent=4,
-            )
+        #with open("logs/time-measure.json", "w+") as time_measure_file:
+        #    json.dump(
+        #        {
+        #            "eventPolling": duration_event_polling,
+        #            "datePolling": duration_date_polling,
+        #            "sorting": duration_sorting,
+        #            "merging": duration_merging,
+        #            "filtering": duration_filtering,
+        #            "prettify": duration_prettify,
+        #        },
+        #        time_measure_file,
+        #        indent=4,
+        #    )
 
         return self.prettified_dates
